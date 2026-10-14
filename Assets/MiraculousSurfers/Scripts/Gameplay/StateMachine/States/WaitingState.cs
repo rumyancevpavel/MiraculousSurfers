@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,7 @@ namespace MiraculousSurfers.Gameplay
         [SerializeField] private OrbitalCameraRig _cameraRig;
         [SerializeField] private OrbitalCameraRig.OrbitPreset _waitingPreset;
         [SerializeField] private GameObject _tapToBeginUi;
+        [SerializeField] private HomeScreeUiView _homeScreeUiView;
 
         [Header("Input")]
         [SerializeField] private string _tapActionName = "Tap";

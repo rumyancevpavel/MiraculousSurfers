@@ -11,6 +11,7 @@ Unity **6000.6.0f1** project using **URP** (17.6). The active pipeline asset is 
 - **No comments in generated code.** Do not add comments to code you write; keep names self-explanatory instead.
 - **Never use coroutines** (`IEnumerator` / `StartCoroutine` / `yield`). Use **UniTask** for all async work.
 - **Private field naming:** private instance data fields always start with an underscore, e.g. `_transitionCts` — **including `[SerializeField] private` fields** (e.g. `_initialState`; Unity still shows a clean inspector label).
+- **Code location:** all project C# code lives under `Assets/MiraculusSurfers/` (e.g. `Assets/MiraculusSurfers/Scripts/...`). Note the folder on disk is spelled `MiraculusSurfers` (no second "o").
 
 ## Validation
 
