@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Characters;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,10 +32,11 @@ namespace MiraculousSurfers.Gameplay
 
         protected override UniTask OnEnterAsync(CancellationToken ct)
         {
-            EnableStateInput();
+            _pointerPositionAction?.action.Enable();
+            _releaseAction?.action.Enable();
             _dragOrigin = ReadPointer();
             _power = 0f;
-            if (_releaseAction != null) _releaseAction.action.performed += OnRelease;
+            Subscribe();
             _active = true;
             return UniTask.CompletedTask;
         }
@@ -71,10 +73,17 @@ namespace MiraculousSurfers.Gameplay
         private Vector2 ReadPointer()
             => _pointerPositionAction != null ? _pointerPositionAction.action.ReadValue<Vector2>() : Vector2.zero;
 
+        protected override void Subscribe()
+        {
+            if (_releaseAction != null) _releaseAction.action.performed += OnRelease;
+        }
+
         protected override void Unsubscribe()
         {
             _active = false;
             if (_releaseAction != null) _releaseAction.action.performed -= OnRelease;
+            _pointerPositionAction?.action.Disable();
+            _releaseAction?.action.Disable();
         }
     }
 }

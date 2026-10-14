@@ -1,5 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Characters;
+using MiraculousSurfers.Gameplay.Score;
 using UnityEngine;
 
 namespace MiraculousSurfers.Gameplay

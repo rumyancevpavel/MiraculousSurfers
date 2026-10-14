@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.Characters
 {
     public class Character : MonoBehaviour
     {

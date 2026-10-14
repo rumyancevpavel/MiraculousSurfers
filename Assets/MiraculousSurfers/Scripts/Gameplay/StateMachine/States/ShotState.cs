@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Characters;
 using UnityEngine;
 
 namespace MiraculousSurfers.Gameplay
@@ -24,10 +25,7 @@ namespace MiraculousSurfers.Gameplay
 
         protected override UniTask OnEnterAsync(CancellationToken ct)
         {
-            _character.Crashed += OnCrashed;
-            _character.MomentumEnded += OnMomentumEnded;
-            _character.SlowedDown += OnSlowedDown;
-
+            Subscribe();
             _character.Launch(_power, _direction);
             return UniTask.CompletedTask;
         }
@@ -37,6 +35,14 @@ namespace MiraculousSurfers.Gameplay
         private void OnMomentumEnded(float distance) => Machine.GoTo(_evaluateDistanceState).Forget();
 
         private void OnSlowedDown() { }
+
+        protected override void Subscribe()
+        {
+            if (_character == null) return;
+            _character.Crashed += OnCrashed;
+            _character.MomentumEnded += OnMomentumEnded;
+            _character.SlowedDown += OnSlowedDown;
+        }
 
         protected override void Unsubscribe()
         {

@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
@@ -9,17 +8,10 @@ namespace MiraculousSurfers.Gameplay
     [RequireComponent(typeof(CinemachineCamera))]
     public class OrbitalCameraRig : MonoBehaviour
     {
-        [Serializable]
-        public struct OrbitPreset
-        {
-            public float Horizontal;
-            public float Vertical;
-            public float Radius;
-        }
-
         [SerializeField] private CinemachineCamera _cam;
         [SerializeField] private CinemachineOrbitalFollow _orbital;
         [SerializeField] private float _defaultDuration = 0.6f;
+        [SerializeField] private AnimationCurve _defaultEase = new AnimationCurve(new Keyframe(0f, 0f, 0f, 2f), new Keyframe(1f, 1f, 0f, 0f));
 
         private void Reset()
         {
@@ -42,10 +34,12 @@ namespace MiraculousSurfers.Gameplay
             _orbital.RadialAxis.Value = p.Radius;
         }
 
-        public async UniTask AnimateToAsync(OrbitPreset target, float duration = -1f, CancellationToken ct = default)
+        public async UniTask AnimateToAsync(OrbitPreset target, float duration = -1f, CancellationToken ct = default, AnimationCurve ease = null)
         {
             if (duration < 0f) duration = _defaultDuration;
             if (duration <= 0f) { SetImmediate(target); return; }
+
+            var curve = ease != null && ease.length > 0 ? ease : _defaultEase;
 
             float startH = _orbital.HorizontalAxis.Value;
             float startV = _orbital.VerticalAxis.Value;
@@ -56,7 +50,8 @@ namespace MiraculousSurfers.Gameplay
             {
                 if (ct.IsCancellationRequested) return;
                 t += Time.deltaTime;
-                float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / duration));
+                float raw = Mathf.Clamp01(t / duration);
+                float k = curve != null && curve.length > 0 ? curve.Evaluate(raw) : Mathf.SmoothStep(0f, 1f, raw);
                 _orbital.HorizontalAxis.Value = Mathf.Lerp(startH, target.Horizontal, k);
                 _orbital.VerticalAxis.Value = Mathf.Lerp(startV, target.Vertical, k);
                 _orbital.RadialAxis.Value = Mathf.Lerp(startR, target.Radius, k);

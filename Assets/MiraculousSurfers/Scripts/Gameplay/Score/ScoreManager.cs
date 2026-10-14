@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.Score
 {
     public class ScoreManager : MonoBehaviour
     {

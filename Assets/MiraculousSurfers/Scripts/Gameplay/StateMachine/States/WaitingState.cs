@@ -9,7 +9,7 @@ namespace MiraculousSurfers.Gameplay
     {
         [Header("Presentation")]
         [SerializeField] private OrbitalCameraRig _cameraRig;
-        [SerializeField] private OrbitalCameraRig.OrbitPreset _waitingPreset;
+        [SerializeField] private OrbitPreset _waitingPreset;
         [SerializeField] private HomeScreenUiView _homeScreenView;
 
         [Header("Flow")]

@@ -722,14 +722,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d82127ca45b44f03897e325e7c2d8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.AimState
-  _inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _stateMapName: Aim
   _cameraRig: {fileID: 1691374035}
   _behindPreset:
     Horizontal: 180
     Vertical: 13
     Radius: 1
-  _sweepDuration: 0.8
+  _sweepDuration: 0.45
+  _sweepEase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _stateMapName: Aim
   _backActionName: Back
   _dragStartActionName: DragStart
   _waitingState: {fileID: 1099449457}
@@ -746,8 +770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89a13c139ac84041b4f28bb82e49178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.WaitingState
-  _inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _stateMapName: 
   _cameraRig: {fileID: 1691374035}
   _waitingPreset:
     Horizontal: 0
@@ -916,7 +938,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 1592535335}
   _tapToPlayButton: {fileID: 601715828}
   _elements: []
-  _fadeDuration: 0.3
+  _fadeDuration: 0.2
 --- !u!1 &1691374034
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,6 +974,30 @@ MonoBehaviour:
   _cam: {fileID: 1691374037}
   _orbital: {fileID: 1691374036}
   _defaultDuration: 0.6
+  _defaultEase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1691374036
 MonoBehaviour:
   m_ObjectHideFlags: 0
