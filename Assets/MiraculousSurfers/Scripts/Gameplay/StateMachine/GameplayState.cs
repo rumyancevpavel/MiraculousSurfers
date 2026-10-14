@@ -50,5 +50,6 @@ namespace MiraculousSurfers.Gameplay
         protected virtual UniTask OnExitAsync(CancellationToken ct) => UniTask.CompletedTask;
 
         protected virtual void Unsubscribe() { }
+        protected virtual void Subscribe() { }
     }
 }

@@ -747,15 +747,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.WaitingState
   _inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _stateMapName: Waiting
+  _stateMapName: 
   _cameraRig: {fileID: 1691374035}
   _waitingPreset:
     Horizontal: 0
     Vertical: 15
     Radius: 1
-  _tapToBeginUi: {fileID: 0}
-  _homeScreeUiView: {fileID: 1592535336}
-  _tapActionName: Tap
+  _homeScreenView: {fileID: 1592535336}
   _aimState: {fileID: 1099449456}
 --- !u!114 &1099449458
 MonoBehaviour:
@@ -800,7 +798,7 @@ GameObject:
   - component: {fileID: 1592535335}
   - component: {fileID: 1592535336}
   m_Layer: 5
-  m_Name: UI [-Wait State-] - Overlay
+  m_Name: HomeScreen UI - Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -917,6 +915,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.UI.HomeScreeUiView
   _canvasGroup: {fileID: 1592535335}
   _tapToPlayButton: {fileID: 601715828}
+  _elements: []
+  _fadeDuration: 0.3
 --- !u!1 &1691374034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
