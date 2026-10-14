@@ -990,6 +990,104 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Waiting",
+            "id": "9cf4d3af-7457-4c06-87b2-9f612eaaefba",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "bf2ec318-dbd2-4fa0-9a89-b4cb1d94c02e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "edb4fecf-95f5-43b0-8c86-c9443eabec3c",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a94b7b2b-be90-4ec0-9638-3d217d0fc7ef",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Aim",
+            "id": "8df51df5-f0ca-49e6-818f-9405f57624f1",
+            "actions": [
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "a611bf18-4520-4626-ba7d-5ee3ad9861b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DragStart",
+                    "type": "Button",
+                    "id": "637942fb-302f-4a46-b17f-4b7494596989",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "22a668fb-f790-48fd-902b-bcc01b3250f4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7c5c562c-234a-45c1-aa47-20fa3f5475d4",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60d80452-1e64-4766-ae0b-19823df97251",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

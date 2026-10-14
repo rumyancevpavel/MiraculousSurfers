@@ -40,6 +40,7 @@ namespace MiraculousSurfers.Gameplay
 
         protected override void Unsubscribe()
         {
+            if (_character == null) return;
             _character.Crashed -= OnCrashed;
             _character.MomentumEnded -= OnMomentumEnded;
             _character.SlowedDown -= OnSlowedDown;

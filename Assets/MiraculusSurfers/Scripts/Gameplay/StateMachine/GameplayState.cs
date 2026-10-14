@@ -9,9 +9,12 @@ namespace MiraculousSurfers.Gameplay
     {
         [Header("Input")]
         [SerializeField] private InputActionAsset _inputAsset;
-        [SerializeField] private InputActionMap _stateInputMap;
+        [SerializeField] private string _stateMapName;
 
         protected GameplayStateMachine Machine { get; private set; }
+
+        protected InputActionMap StateMap =>
+            string.IsNullOrEmpty(_stateMapName) ? null : _inputAsset?.FindActionMap(_stateMapName, false);
 
         public void Bind(GameplayStateMachine machine) => Machine = machine;
 
@@ -24,14 +27,22 @@ namespace MiraculousSurfers.Gameplay
         public async UniTask ExitAsync(CancellationToken ct)
         {
             Unsubscribe();
-            if (_stateInputMap != null) _stateInputMap.Disable();
+            StateMap?.Disable();
             await OnExitAsync(ct);
         }
 
         protected void EnableStateInput()
         {
             _inputAsset?.Disable();
-            if (_stateInputMap != null) _stateInputMap.Enable();
+            StateMap?.Enable();
+        }
+
+        protected InputAction GetAction(string actionName) => StateMap?.FindAction(actionName, false);
+
+        protected virtual void OnDisable()
+        {
+            Unsubscribe();
+            StateMap?.Disable();
         }
 
         protected abstract UniTask OnEnterAsync(CancellationToken ct);

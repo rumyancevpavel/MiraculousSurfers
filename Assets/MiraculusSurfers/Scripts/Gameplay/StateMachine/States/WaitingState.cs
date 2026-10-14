@@ -13,10 +13,12 @@ namespace MiraculousSurfers.Gameplay
         [SerializeField] private GameObject _tapToBeginUi;
 
         [Header("Input")]
-        [SerializeField] private InputActionReference _tapAction;
+        [SerializeField] private string _tapActionName = "Tap";
 
         [Header("Flow")]
         [SerializeField] private GameplayState _aimState;
+
+        private InputAction _tap;
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
@@ -28,7 +30,8 @@ namespace MiraculousSurfers.Gameplay
 
             if (_tapToBeginUi != null) _tapToBeginUi.SetActive(true);
             EnableStateInput();
-            if (_tapAction != null) _tapAction.action.performed += OnTap;
+            _tap = GetAction(_tapActionName);
+            if (_tap != null) _tap.performed += OnTap;
         }
 
         private void OnTap(InputAction.CallbackContext _)
@@ -39,7 +42,8 @@ namespace MiraculousSurfers.Gameplay
 
         protected override void Unsubscribe()
         {
-            if (_tapAction != null) _tapAction.action.performed -= OnTap;
+            if (_tap != null) _tap.performed -= OnTap;
+            _tap = null;
         }
     }
 }

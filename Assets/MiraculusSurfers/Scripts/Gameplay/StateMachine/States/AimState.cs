@@ -13,12 +13,15 @@ namespace MiraculousSurfers.Gameplay
         [SerializeField] private float _sweepDuration = 0.8f;
 
         [Header("Input")]
-        [SerializeField] private InputActionReference _backAction;
-        [SerializeField] private InputActionReference _dragStartAction;
+        [SerializeField] private string _backActionName = "Back";
+        [SerializeField] private string _dragStartActionName = "DragStart";
 
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
         [SerializeField] private GameplayState _chargeState;
+
+        private InputAction _back;
+        private InputAction _dragStart;
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
@@ -26,17 +29,25 @@ namespace MiraculousSurfers.Gameplay
             if (ct.IsCancellationRequested) return;
 
             EnableStateInput();
-            if (_backAction != null) _backAction.action.performed += OnBack;
-            if (_dragStartAction != null) _dragStartAction.action.performed += OnDragStart;
+            _back = GetAction(_backActionName);
+            _dragStart = GetAction(_dragStartActionName);
+            if (_back != null) _back.performed += OnBack;
+            if (_dragStart != null) _dragStart.performed += OnDragStart;
         }
 
         private void OnBack(InputAction.CallbackContext _) => Machine.GoTo(_waitingState).Forget();
-        private void OnDragStart(InputAction.CallbackContext _) => Machine.GoTo(_chargeState).Forget();
+
+        private void OnDragStart(InputAction.CallbackContext _)
+        {
+            if (_chargeState != null) Machine.GoTo(_chargeState).Forget();
+        }
 
         protected override void Unsubscribe()
         {
-            if (_backAction != null) _backAction.action.performed -= OnBack;
-            if (_dragStartAction != null) _dragStartAction.action.performed -= OnDragStart;
+            if (_back != null) _back.performed -= OnBack;
+            if (_dragStart != null) _dragStart.performed -= OnDragStart;
+            _back = null;
+            _dragStart = null;
         }
     }
 }

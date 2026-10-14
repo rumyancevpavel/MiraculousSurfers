@@ -12,6 +12,10 @@ Unity **6000.6.0f1** project using **URP** (17.6). The active pipeline asset is 
 - **Never use coroutines** (`IEnumerator` / `StartCoroutine` / `yield`). Use **UniTask** for all async work.
 - **Private field naming:** private instance data fields always start with an underscore, e.g. `_transitionCts` — **including `[SerializeField] private` fields** (e.g. `_initialState`; Unity still shows a clean inspector label).
 
+## Validation
+
+- **Don't make visual validations yourself.** Do not capture the game/scene view and judge whether a result looks correct on your own. Instead, set up the state to be checked, then **ask the user to look and approve or disapprove**, and wait for their verdict before treating it as validated. (Programmatic checks — compile status, transforms, positions, state values, console errors — are still yours to verify.)
+
 ## Driving the Unity Editor with `unity` CLI
 
 The `unity` CLI (`~/.unity/bin/unity`) controls the **running** Editor through the `com.unity.pipeline` package (Editor server on port 7800). Use it to change scenes, prefabs, assets and settings instead of hand-editing `.unity`, `.prefab` or `.asset` YAML. The project-local skills `.claude/skills/unity-cli` and `.claude/skills/unity-pipeline` have the full reference.
