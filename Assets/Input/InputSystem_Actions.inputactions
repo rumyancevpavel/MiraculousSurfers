@@ -1016,16 +1016,6 @@
             "id": "8df51df5-f0ca-49e6-818f-9405f57624f1",
             "actions": [
                 {
-                    "name": "Back",
-                    "type": "Button",
-                    "id": "a611bf18-4520-4626-ba7d-5ee3ad9861b8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false,
-                    "priority": 0
-                },
-                {
                     "name": "DragStart",
                     "type": "Button",
                     "id": "637942fb-302f-4a46-b17f-4b7494596989",
@@ -1037,17 +1027,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "22a668fb-f790-48fd-902b-bcc01b3250f4",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Back",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "7c5c562c-234a-45c1-aa47-20fa3f5475d4",

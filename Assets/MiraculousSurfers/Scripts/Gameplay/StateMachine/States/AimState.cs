@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,18 +13,17 @@ namespace MiraculousSurfers.Gameplay
         [SerializeField] private OrbitPreset _behindPreset;
         [SerializeField] private float _sweepDuration = 0.45f;
         [SerializeField] private AnimationCurve _sweepEase;
+        [SerializeField] private AimScreenUiView _aimScreenView;
 
         [Header("Input")]
         [SerializeField] private InputActionAsset _inputAsset;
         [SerializeField] private string _stateMapName = "Aim";
-        [SerializeField] private string _backActionName = "Back";
         [SerializeField] private string _dragStartActionName = "DragStart";
 
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
         [SerializeField] private GameplayState _chargeState;
 
-        private InputAction _back;
         private InputAction _dragStart;
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
@@ -33,12 +33,13 @@ namespace MiraculousSurfers.Gameplay
 
             EnableMap();
             Subscribe();
+            if (_aimScreenView != null) await _aimScreenView.ShowAsync(ct);
         }
 
-        protected override UniTask OnExitAsync(CancellationToken ct)
+        protected override async UniTask OnExitAsync(CancellationToken ct)
         {
             DisableMap();
-            return UniTask.CompletedTask;
+            if (_aimScreenView != null) await _aimScreenView.HideAsync(ct);
         }
 
         protected override void OnDisable()
@@ -61,7 +62,7 @@ namespace MiraculousSurfers.Gameplay
             _inputAsset?.FindActionMap(_stateMapName, false)?.Disable();
         }
 
-        private void OnBack(InputAction.CallbackContext _) => Machine.GoTo(_waitingState).Forget();
+        private void OnBack() => Machine.GoTo(_waitingState).Forget();
 
         private void OnDragStart(InputAction.CallbackContext _)
         {
@@ -71,18 +72,16 @@ namespace MiraculousSurfers.Gameplay
         protected override void Subscribe()
         {
             var map = string.IsNullOrEmpty(_stateMapName) ? null : _inputAsset?.FindActionMap(_stateMapName, false);
-            _back = map?.FindAction(_backActionName, false);
             _dragStart = map?.FindAction(_dragStartActionName, false);
-            if (_back != null) _back.performed += OnBack;
             if (_dragStart != null) _dragStart.performed += OnDragStart;
+            if (_aimScreenView != null) _aimScreenView.Back += OnBack;
         }
 
         protected override void Unsubscribe()
         {
-            if (_back != null) _back.performed -= OnBack;
             if (_dragStart != null) _dragStart.performed -= OnDragStart;
-            _back = null;
             _dragStart = null;
+            if (_aimScreenView != null) _aimScreenView.Back -= OnBack;
         }
     }
 }
