@@ -16,6 +16,7 @@ namespace MiraculousSurfers.Gameplay.UI
         [SerializeField] private Image _iconImage;
         [SerializeField] private Slider _progressSlider;
         [SerializeField] private TMP_Text _progressText;
+        [SerializeField] private TMP_Text _upgradePriceText;
         [SerializeField] private Button _upgradeButton;
 
         public UpgradeParam Param => _param;
@@ -36,7 +37,7 @@ namespace MiraculousSurfers.Gameplay.UI
             if (_iconImage != null) _iconImage.sprite = configuration.Icon(_param);
         }
 
-        public void SetProgress(int current, int max)
+        public void SetProgress(int current, int max, int nextCost)
         {
             if (_progressSlider != null)
             {
@@ -46,6 +47,7 @@ namespace MiraculousSurfers.Gameplay.UI
             }
 
             if (_progressText != null) _progressText.text = $"{current}/{max}";
+            if (_upgradePriceText != null) _upgradePriceText.text = nextCost > 0 ? nextCost.ToString() : "MAX";
         }
 
         private void RaiseUpgradeRequested()

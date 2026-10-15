@@ -26,6 +26,7 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterEntryPoint<UpgradeService>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();
+            builder.RegisterComponentInHierarchy<PlayerWalletView>();
         }
     }
 }

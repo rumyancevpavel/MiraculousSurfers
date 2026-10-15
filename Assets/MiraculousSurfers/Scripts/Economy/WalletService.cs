@@ -26,6 +26,7 @@ namespace MiraculousSurfers.Economy
         {
             var result = await _save.LoadAsync(cancellation);
             _data = result.Success ? result.Value : _save.CreateDefault();
+            Changed?.Invoke();
         }
 
         public async UniTask<bool> TrySpend(int amount)

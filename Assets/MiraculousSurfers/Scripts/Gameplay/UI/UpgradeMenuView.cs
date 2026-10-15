@@ -73,7 +73,7 @@ namespace MiraculousSurfers.Gameplay.UI
 
         private void Refresh(UpgradeSkillCardView card)
         {
-            card.SetProgress(_upgrades.GetIndex(card.Param), _upgrades.GetMaxIndex(card.Param));
+            card.SetProgress(_upgrades.GetIndex(card.Param), _upgrades.GetMaxIndex(card.Param), _upgrades.GetNextCost(card.Param));
         }
     }
 }

@@ -400,6 +400,7 @@ MonoBehaviour:
   _iconImage: {fileID: 6329270991290981279}
   _progressSlider: {fileID: 1239925630579501080}
   _progressText: {fileID: 6895009182016040647}
+  _upgradePriceText: {fileID: 6020692840126055303}
   _upgradeButton: {fileID: 6691923056313034762}
 --- !u!1 &2489277833580281561
 GameObject:
@@ -510,7 +511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -55.7, y: 0.0000030398}
+  m_AnchoredPosition: {x: -55.699997, y: 0.0000030398}
   m_SizeDelta: {x: 48.4561, y: 48.4563}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3065543786080758518
@@ -638,7 +639,7 @@ GameObject:
   - component: {fileID: 5970923358022700951}
   - component: {fileID: 6020692840126055303}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UpgradePrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,10 +659,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3453968968524514654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 39.2, y: 0.0000038147}
-  m_SizeDelta: {x: -173.3463, y: -37.492}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 39.199997, y: 0.0000038146973}
+  m_SizeDelta: {x: 122.531815, y: 60.826702}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5970923358022700951
 CanvasRenderer:
