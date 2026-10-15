@@ -1,6 +1,6 @@
 ---
 id: SPEC-gameplay-state-machine
-companions: [state-machines.md]
+companions: [state-machines.md, ../spec-character-running/SPEC.md]
 sources: []
 ---
 
@@ -15,11 +15,11 @@ A vision to realize. MiraculousSurfers is a slingshot-launch surfer game whose c
 ## Capabilities
 
 - **CAP-1** — Start a run
-  - **intent:** From the initial Waiting state the camera frames the character and "Tap to begin" shows; a tap advances to Aim.
-  - **success:** Before the tap no launch input is accepted; tapping transitions to Aim.
+  - **intent:** From the initial Waiting state the camera frames the character and a home screen fades in with a "Tap to begin" button; tapping it advances to Aim.
+  - **success:** Before the tap no launch input is accepted; tapping the button transitions to Aim.
 
 - **CAP-2** — Aim or back out
-  - **intent:** In the behind-the-character Aim view the player can return to Waiting or begin a drag to charge.
+  - **intent:** In the behind-the-character Aim view the player can return to Waiting (a Back button) or begin a drag to charge.
   - **success:** Back returns to Waiting; starting a drag enters Charge.
 
 - **CAP-3** — Charge and release
@@ -27,7 +27,7 @@ A vision to realize. MiraculousSurfers is a slingshot-launch surfer game whose c
   - **success:** Releasing past the threshold launches the character with power and direction matching the drag; releasing below it returns to Aim with no launch.
 
 - **CAP-4** — Flight and outcome routing
-  - **intent:** After launch the character slides under its own physics; the machine reacts to the character's events and routes, with no return to pre-shot states.
+  - **intent:** After launch the character runs under its own movement model (specced in `spec-character-running`); the machine reacts to the character's events and routes, with no return to pre-shot states.
   - **success:** Crashed routes to Crash; MomentumEnded routes to distance evaluation; SlowedDown produces feedback with no transition; no transition back to Charge/Aim/Waiting occurs during flight.
 
 - **CAP-5** — Evaluate against session best
@@ -47,9 +47,11 @@ A vision to realize. MiraculousSurfers is a slingshot-launch surfer game whose c
 - One active state at a time per machine; parallel behavior is achieved via nested/referenced sub-machines (composition), never concurrent active states.
 - Transitions are routed by serialized next-state references on each state (an inspector-visible flow graph); a state calls `machine.GoTo(next)` and its own logic picks which exit (Shot has onCrash/onStop; single-exit states have one reference).
 - The machine never drives physics: the character is a self-driving actor that owns movement and animation and emits `SlowedDown`, `Crashed`, and `MomentumEnded(distance)`; the machine only commands (`Launch`) and reacts.
-- Input is decentralized per state via Unity Input System Action Maps: each state enables its own map and disables the rest on enter/exit. Mobile-first; tap and drag are the primary inputs.
-- Transitions are async via UniTask: a state awaits its presentation (e.g. the camera sweep) before enabling input. Coroutines are forbidden — UniTask only — per project convention.
-- Camera uses Cinemachine: one shared `CinemachineCamera` with Orbital Follow, animated between orbit presets (not camera-swapping) to produce the circular Wait↔Aim sweep around the character.
+- Input is hybrid and decentralized per state. Discrete menu actions (tap-to-begin, back) are Unity UI Buttons surfaced as C# events on the state's UI screen view; gestures use the Input System — Aim enables a named Action Map (`"Aim"` / `DragStart`), Charge enables/disables individual `InputActionReference`s (pointer position + release). Each state enables only what it needs on enter and tears it down on exit. Mobile-first; tap and drag are the primary inputs.
+- UI screens are their own presentation components: a `UiScreenView` fades a `CanvasGroup` in/out via UniTask (`ShowAsync`/`HideAsync`) and toggles interactable/raycast and child elements; a state awaits show on enter and hide on exit. Screen-specific views (home, aim) subclass it and expose their button presses as C# events the owning state subscribes to.
+- Transitions are async via UniTask: a state awaits its presentation (the camera sweep, the UI fade) before enabling input. Coroutines are forbidden — UniTask only — per project convention.
+- Camera uses Cinemachine with per-phase cameras that `CinemachineBrain` blends between (by `Prioritize`): the shared orbital-follow rig (serialized `OrbitPreset` structs, horizontal/vertical/radius axis values) produces the circular Wait↔Aim sweep; the flight phase prioritizes an **additional dedicated chase camera** (Third Person Follow) and reset re-prioritizes the Waiting camera. Not camera-swapping for the Wait↔Aim sweep; a separate camera for flight.
+- The loop-back reset to Waiting is hidden behind the `UiScreenView` fade: the terminal state fades out, then the Waiting camera is re-prioritized and the character is reset to spawn (a `CharacterController`-safe reset — see `spec-character-running`) behind black, then fade in with Waiting framing the origin. This keeps the reset smooth and avoids a cross-level camera swoop.
 - `SlowedDown` is feedback-only and must never cause a state transition.
 - The session best lives in a `ScoreManager`, not on the character; per-run `TraveledDistance` lives on the character and resets each launch.
 
@@ -66,10 +68,11 @@ A player completes the full loop in the Gameplay scene: tap to begin → the cam
 
 ## Assumptions
 
-- The character prefab exists (or will) as a self-driving actor matching the event + `Launch(power, direction)` contract; it is currently a stub (`Character.cs`).
-- Charge computes power/direction and configures Shot, which subscribes before launching — i.e. Shot owns `Launch` and Charge owns the drag math, as built in the scaffold.
+- The character prefab exists (or will) as a self-driving actor matching the event + `Launch(power, direction)` contract; it is currently a stub (`Character.cs` under `Characters/`, which resets `TraveledDistance` on `Launch` and exposes `RaiseSlowedDown/Crashed/MomentumEnded` for a concrete subclass to drive). The concrete flight movement is specced in `spec-character-running` (adopted companion).
+- Charge computes power/direction and configures Shot, which subscribes before launching — i.e. Shot owns `Launch` and Charge owns the drag math, as built. Until real drag exists, a **stub `ChargeState`** (serialized power/direction; in Aim a tap that is not Back enters it, configures Shot, and transitions to flight) stands in as the test harness — an instance of CAP-7 extensibility (a swapped state variant, zero change to other states).
 
 ## Open Questions
 
-- How does horizontal drag map to a world launch direction (ground-plane projection, sensitivity, clamps)? Left for tuning.
-- Should terminal-state completion (the New Record celebration and the Crash death animation) be driven by animation events/signals rather than the scaffold's placeholder fixed delays?
+- **CAP-6, record-on-level-map not yet built.** `NewRecordState` as implemented only plays the `Happy` animator trigger then returns to Waiting after a fixed delay; marking the record on the level map (part of CAP-6 intent) is not yet implemented. Kept as intended capability.
+- How does drag map to a world launch direction? As built, direction = `normalize(delta.x, 0, abs(delta.y))` (vertical drag → forward, horizontal → left/right) with dead-zone and `maxDrag` clamps — still tuning-level (ground-plane projection, sensitivity).
+- Should terminal-state completion (the New Record celebration and the Crash death animation) be driven by animation events/signals rather than the current placeholder fixed delays?

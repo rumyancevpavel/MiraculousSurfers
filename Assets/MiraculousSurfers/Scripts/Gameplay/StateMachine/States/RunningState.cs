@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MiraculousSurfers.Gameplay
 {
-    public class ShotState : GameplayState
+    public class RunningState : GameplayState
     {
         [Header("Refs")]
         [SerializeField] private Character _character;

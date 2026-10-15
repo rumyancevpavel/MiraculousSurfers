@@ -52,7 +52,7 @@ namespace MiraculousSurfers.Gameplay
                 t += Time.deltaTime;
                 float raw = Mathf.Clamp01(t / duration);
                 float k = curve != null && curve.length > 0 ? curve.Evaluate(raw) : Mathf.SmoothStep(0f, 1f, raw);
-                _orbital.HorizontalAxis.Value = Mathf.Lerp(startH, target.Horizontal, k);
+                _orbital.HorizontalAxis.Value = Mathf.LerpAngle(startH, target.Horizontal, k);
                 _orbital.VerticalAxis.Value = Mathf.Lerp(startV, target.Vertical, k);
                 _orbital.RadialAxis.Value = Mathf.Lerp(startR, target.Radius, k);
                 await UniTask.Yield(PlayerLoopTiming.Update);

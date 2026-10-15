@@ -154,11 +154,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 676.1582}
   m_Pivot: {x: 0.5, y: 0}
---- !u!4 &295446562 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 547198466438086998, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
-  m_PrefabInstance: {fileID: 2905623784537869361}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +415,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.8218205, y: -0.13600205, z: 0.22020607, w: 0.50756663}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -845,7 +840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.AimState
   _cameraRig: {fileID: 1691374035}
   _behindPreset:
-    Horizontal: 180
+    Horizontal: 0
     Vertical: 13
     Radius: 1
   _sweepDuration: 0.45
@@ -893,7 +888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.WaitingState
   _cameraRig: {fileID: 1691374035}
   _waitingPreset:
-    Horizontal: 0
+    Horizontal: 180
     Vertical: 15
     Radius: 1
   _homeScreenView: {fileID: 1592535336}
@@ -1472,8 +1467,8 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 295446562}
-    LookAtTarget: {fileID: 295446562}
+    TrackingTarget: {fileID: 2893241890803435874}
+    LookAtTarget: {fileID: 2893241890803435874}
     CustomLookAtTarget: 1
   Lens:
     FieldOfView: 40
@@ -1676,7 +1671,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786353721}
   m_CullTransparentMesh: 1
---- !u!1001 &2905623784537869361
+--- !u!1001 &2893241890803435873
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1684,55 +1679,60 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 547198466437799056, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
-      propertyPath: m_Name
-      value: Marinette
-      objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 547198466438086832, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934280850970809062, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+      propertyPath: m_Name
+      value: MarinetteArmature
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 47f33f69ec2ae42b8a11048b1c41a01c, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+--- !u!4 &2893241890803435874 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 189616866298346735, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+  m_PrefabInstance: {fileID: 2893241890803435873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1740,7 +1740,7 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 2905623784537869361}
+  - {fileID: 2893241890803435873}
   - {fileID: 1691374039}
   - {fileID: 1099449459}
   - {fileID: 1592535334}

@@ -23,7 +23,7 @@ namespace MiraculousSurfers.Gameplay
 
         [Header("Flow")]
         [SerializeField] private GameplayState _aimState;
-        [SerializeField] private ShotState _shotState;
+        [SerializeField] private RunningState runningState;
 
         private bool _active;
         private Vector2 _dragOrigin;
@@ -61,8 +61,8 @@ namespace MiraculousSurfers.Gameplay
 
             if (_power >= _fireThreshold)
             {
-                _shotState.Configure(_power * _launchPower, _direction);
-                Machine.GoTo(_shotState).Forget();
+                runningState.Configure(_power * _launchPower, _direction);
+                Machine.GoTo(runningState).Forget();
             }
             else
             {
