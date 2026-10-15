@@ -31,10 +31,10 @@ namespace MiraculousSurfers.Gameplay.UI
         private void Compute(PointerEventData eventData, out float charge, out Vector3 direction)
         {
             Vector2 delta = eventData.position - eventData.pressPosition;
-            float dist = delta.magnitude;
-            float t = Mathf.Clamp01((dist - _deadZone) / Mathf.Max(1f, _maxDrag - _deadZone));
+            float down = Mathf.Max(0f, -delta.y);
+            float t = Mathf.Clamp01((down - _deadZone) / Mathf.Max(1f, _maxDrag - _deadZone));
             charge = t * _maxCharge;
-            direction = dist >= _deadZone ? new Vector3(delta.x, 0f, Mathf.Abs(delta.y)).normalized : Vector3.forward;
+            direction = down >= _deadZone ? new Vector3(delta.x, 0f, down).normalized : Vector3.forward;
         }
     }
 }
