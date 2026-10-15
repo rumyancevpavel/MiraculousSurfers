@@ -20,5 +20,15 @@ namespace MiraculousSurfers.Data
         {
             return data != null && data.Coins >= 0;
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.MenuItem("MiraculousSurfers/Reset Saved Data/Player Wallet")]
+        public static void ResetSavedData()
+        {
+            UnityEngine.PlayerPrefs.DeleteKey($"{StorageKeyRoot}.{FormatVersion}");
+            UnityEngine.PlayerPrefs.Save();
+            UnityEngine.Debug.Log("Player wallet saved data reset.");
+        }
+#endif
     }
 }

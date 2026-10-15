@@ -11,7 +11,7 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         public float TraveledDistance { get; protected set; }
 
-        public virtual void Launch(float power, Vector3 direction)
+        public virtual void Launch(LaunchParams launchParams)
         {
             TraveledDistance = 0f;
         }

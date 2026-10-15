@@ -1,12 +1,18 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
+using VContainer;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.StateMachine
 {
     public abstract class GameplayState : MonoBehaviour
     {
         protected GameplayStateMachine Machine { get; private set; }
+        protected IUpgradeService Upgrades { get; private set; }
+
+        [Inject]
+        public void InjectDependencies(IUpgradeService upgrades) => Upgrades = upgrades;
 
         public void Bind(GameplayStateMachine machine) => Machine = machine;
 

@@ -1,9 +1,11 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.UI;
+using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.StateMachine.States
 {
     public class AimChargeState : GameplayState
     {
@@ -69,7 +71,10 @@ namespace MiraculousSurfers.Gameplay
         {
             if (charge >= _minChargeToFire)
             {
-                _runningState.Configure(charge, direction);
+                var power = charge * Upgrades.GetValue(UpgradeParam.LaunchPower);
+                var speedMultiplier = Upgrades.GetValue(UpgradeParam.Speed);
+                var steerMultiplier = Upgrades.GetValue(UpgradeParam.SteeringResponsiveness);
+                _runningState.Configure(new LaunchParams(power, direction, speedMultiplier, steerMultiplier));
                 Machine.GoTo(_runningState).Forget();
                 return;
             }

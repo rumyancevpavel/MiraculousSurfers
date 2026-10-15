@@ -4,7 +4,7 @@ using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.StateMachine.States
 {
     public class RunningState : GameplayState
     {
@@ -18,20 +18,18 @@ namespace MiraculousSurfers.Gameplay
         [SerializeField] private GameplayState _evaluateDistanceState;
         [SerializeField] private GameplayState _crashState;
 
-        private float _power;
-        private Vector3 _direction;
+        private LaunchParams _launchParams;
         private bool _running;
 
-        public void Configure(float power, Vector3 direction)
+        public void Configure(LaunchParams launchParams)
         {
-            _power = power;
-            _direction = direction;
+            _launchParams = launchParams;
         }
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
             Subscribe();
-            _character.Launch(_power, _direction);
+            _character.Launch(_launchParams);
             _running = true;
 
             if (_runningScreenView != null)

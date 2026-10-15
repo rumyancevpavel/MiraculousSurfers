@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.StateMachine.States
 {
     public class TryEndedState : GameplayState
     {

@@ -1,8 +1,9 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using VContainer;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.StateMachine
 {
     public class GameplayStateMachine : MonoBehaviour
     {
@@ -11,6 +12,15 @@ namespace MiraculousSurfers.Gameplay
         private GameplayState Current { get; set; }
 
         private CancellationTokenSource _transitionCts;
+
+        [Inject]
+        public void InjectStates(IObjectResolver resolver)
+        {
+            foreach (var state in GetComponentsInChildren<GameplayState>(true))
+            {
+                resolver.Inject(state);
+            }
+        }
 
         private void Start() => GoTo(_initialState).Forget();
 

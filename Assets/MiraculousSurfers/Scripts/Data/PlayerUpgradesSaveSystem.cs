@@ -28,5 +28,22 @@ namespace MiraculousSurfers.Data
                 && data.SteeringResponsiveness >= 0
                 && data.CollectibleValue >= 0;
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.MenuItem("MiraculousSurfers/Reset Saved Data/Player Upgrades")]
+        public static void ResetSavedData()
+        {
+            UnityEngine.PlayerPrefs.DeleteKey($"{StorageKeyRoot}.{FormatVersion}");
+            UnityEngine.PlayerPrefs.Save();
+            UnityEngine.Debug.Log("Player upgrades saved data reset.");
+        }
+
+        [UnityEditor.MenuItem("MiraculousSurfers/Reset Saved Data/All")]
+        public static void ResetAllSavedData()
+        {
+            ResetSavedData();
+            PlayerWalletSaveSystem.ResetSavedData();
+        }
+#endif
     }
 }

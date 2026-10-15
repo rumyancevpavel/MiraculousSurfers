@@ -2,6 +2,7 @@ using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Data;
 using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Events;
+using MiraculousSurfers.Gameplay.StateMachine;
 using MiraculousSurfers.Gameplay.UI;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.Register<GameplayEventBus>(Lifetime.Singleton);
             builder.RegisterEntryPoint<UpgradeService>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
+            builder.RegisterComponentInHierarchy<GameplayStateMachine>();
         }
     }
 }

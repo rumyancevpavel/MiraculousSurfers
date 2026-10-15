@@ -22,8 +22,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         [SerializeField] private float _minDrain = 0.05f;
 
         [Header("Steering")]
-        [SerializeField] private float _steerRate = 20f;
-        [SerializeField] private float _lateralSpeed = 15f;
+        [SerializeField] private float _steerRatio = 0.2f;
 
         [Header("Grounding")]
         [SerializeField] private float _gravity = 20f;
@@ -31,25 +30,24 @@ namespace MiraculousSurfers.Gameplay.Characters
         private bool _running;
         private float _fuel;
         private float _initialFuel;
-        private float _targetX;
-        private Vector3 _heading = Vector3.forward;
+        private float _speedMultiplier = 1f;
+        private float _steerMultiplier = 1f;
 
         private void Awake()
         {
             if (_controller == null) _controller = GetComponent<CharacterController>();
         }
 
-        public override void Launch(float power, Vector3 direction)
+        public override void Launch(LaunchParams launchParams)
         {
-            base.Launch(power, direction);
+            base.Launch(launchParams);
 
-            _initialFuel = Mathf.Max(0.0001f, power * _fuelPerPower);
+            _speedMultiplier = launchParams.SpeedMultiplier;
+            _steerMultiplier = launchParams.SteerMultiplier;
+
+            _initialFuel = Mathf.Max(0.0001f, launchParams.Power * _fuelPerPower);
             _fuel = _initialFuel;
 
-            var flat = new Vector3(direction.x, 0f, direction.z);
-            _heading = flat.sqrMagnitude > 0.0001f ? flat.normalized : Vector3.forward;
-
-            _targetX = transform.position.x;
             _steerInput?.action.Enable();
             _running = true;
         }
@@ -64,7 +62,6 @@ namespace MiraculousSurfers.Gameplay.Characters
             if (_spawn == null) return;
             _controller.enabled = false;
             transform.SetPositionAndRotation(_spawn.position, _spawn.rotation);
-            _targetX = _spawn.position.x;
             _controller.enabled = true;
         }
 
@@ -72,17 +69,19 @@ namespace MiraculousSurfers.Gameplay.Characters
         {
             if (!_running) return;
 
-            float steer = _steerInput != null ? _steerInput.action.ReadValue<Vector2>().x : 0f;
+            float steer = _steerInput != null ? Mathf.Clamp(_steerInput.action.ReadValue<Vector2>().x, -1f, 1f) : 0f;
             float left = _leftBound != null ? _leftBound.position.x : float.NegativeInfinity;
             float right = _rightBound != null ? _rightBound.position.x : float.PositiveInfinity;
-            _targetX = Mathf.Clamp(_targetX + steer * _steerRate * Time.deltaTime, left, right);
 
-            float speed = _fuel * _fuelToSpeed;
-            float newX = Mathf.MoveTowards(transform.position.x, _targetX, _lateralSpeed * Time.deltaTime);
+            float speed = _fuel * _fuelToSpeed * _speedMultiplier;
 
-            Vector3 delta = _heading * (speed * Time.deltaTime);
-            delta.x += newX - transform.position.x;
-            delta.y -= _gravity * Time.deltaTime;
+            float currentX = transform.position.x;
+            float lateral = steer * _steerRatio * _steerMultiplier * speed * Time.deltaTime;
+            float newX = Mathf.Clamp(currentX + lateral, left, right);
+
+            Vector3 delta = Vector3.forward * (speed * Time.deltaTime);
+            delta.x = newX - currentX;
+            delta.y = -_gravity * Time.deltaTime;
 
             Vector3 before = transform.position;
             _controller.Move(delta);
