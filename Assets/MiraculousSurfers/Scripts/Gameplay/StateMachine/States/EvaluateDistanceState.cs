@@ -1,6 +1,5 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Score;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
     public class EvaluateDistanceState : GameplayState
     {
         [Header("Refs")]
-        [SerializeField] private Character _character;
         [SerializeField] private ScoreManager _scoreManager;
 
         [Header("Flow")]
@@ -18,8 +16,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         protected override UniTask OnEnterAsync(CancellationToken ct)
         {
-            bool isRecord = _scoreManager.Submit(_character.TraveledDistance);
-            Machine.GoTo(isRecord ? _newRecordState : _tryEndedState).Forget();
+            Machine.GoTo(_scoreManager.IsNewRecord ? _newRecordState : _tryEndedState).Forget();
             return UniTask.CompletedTask;
         }
     }

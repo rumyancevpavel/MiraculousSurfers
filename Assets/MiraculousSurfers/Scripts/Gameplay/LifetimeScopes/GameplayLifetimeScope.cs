@@ -2,6 +2,7 @@ using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Data;
 using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Events;
+using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.StateMachine;
 using MiraculousSurfers.Gameplay.UI;
 using MiraculousSurfers.Gameplay.Upgrades;
@@ -27,6 +28,8 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();
             builder.RegisterComponentInHierarchy<PlayerWalletView>();
+            builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<ScoreManager>();
         }
     }
 }

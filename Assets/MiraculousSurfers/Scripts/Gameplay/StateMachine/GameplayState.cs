@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 using VContainer;
@@ -10,9 +11,14 @@ namespace MiraculousSurfers.Gameplay.StateMachine
     {
         protected GameplayStateMachine Machine { get; private set; }
         protected IUpgradeService Upgrades { get; private set; }
+        protected GameplayEventBus Events { get; private set; }
 
         [Inject]
-        public void InjectDependencies(IUpgradeService upgrades) => Upgrades = upgrades;
+        public void InjectDependencies(IUpgradeService upgrades, GameplayEventBus events)
+        {
+            Upgrades = upgrades;
+            Events = events;
+        }
 
         public void Bind(GameplayStateMachine machine) => Machine = machine;
 

@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Gameplay.Characters;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
 
@@ -50,9 +51,17 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             _runningScreenView.SetDistance(_character.TraveledDistance);
         }
 
-        private void OnCrashed() => Machine.GoTo(_crashState).Forget();
+        private void OnCrashed()
+        {
+            Events.Publish(GameplayEventType.RunEnded, new RunEnded(_character.TraveledDistance, _character.transform.position, RunEndReason.Crashed));
+            Machine.GoTo(_crashState).Forget();
+        }
 
-        private void OnMomentumEnded(float distance) => Machine.GoTo(_evaluateDistanceState).Forget();
+        private void OnMomentumEnded(float distance)
+        {
+            Events.Publish(GameplayEventType.RunEnded, new RunEnded(distance, _character.transform.position, RunEndReason.MomentumDepleted));
+            Machine.GoTo(_evaluateDistanceState).Forget();
+        }
 
         private void OnSlowedDown() { }
 

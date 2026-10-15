@@ -43,6 +43,7 @@ namespace MiraculousSurfers.Data
         {
             ResetSavedData();
             PlayerWalletSaveSystem.ResetSavedData();
+            PlayerHighScoreSaveSystem.ResetSavedData();
         }
 #endif
     }
