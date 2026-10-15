@@ -21,10 +21,14 @@ namespace MiraculousSurfers.Configuration
         public class UpgradeLadder
         {
             [SerializeField] private UpgradeParam _param;
+            [SerializeField] private string _displayName;
+            [SerializeField] private Sprite _icon;
             [SerializeField] private float _baseValue;
             [SerializeField] private UpgradeStep[] _steps;
 
             public UpgradeParam Param => _param;
+            public string DisplayName => _displayName;
+            public Sprite Icon => _icon;
             public float BaseValue => _baseValue;
             public UpgradeStep[] Steps => _steps;
         }

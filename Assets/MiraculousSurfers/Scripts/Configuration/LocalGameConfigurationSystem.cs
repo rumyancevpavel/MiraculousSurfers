@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MiraculousSurfers.Gameplay.Upgrades;
+using UnityEngine;
 
 namespace MiraculousSurfers.Configuration
 {
@@ -39,6 +40,16 @@ namespace MiraculousSurfers.Configuration
         public bool HasNext(UpgradeParam param, int index)
         {
             return index < Resolve(param).Steps.Length;
+        }
+
+        public string DisplayName(UpgradeParam param)
+        {
+            return Resolve(param).DisplayName;
+        }
+
+        public Sprite Icon(UpgradeParam param)
+        {
+            return Resolve(param).Icon;
         }
 
         private GameConfiguration.UpgradeLadder Resolve(UpgradeParam param)
