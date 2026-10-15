@@ -1,0 +1,32 @@
+namespace MiraculousSurfers.Data
+{
+    public class PlayerUpgradesSaveSystem : PlayerPrefsDataSaveSystem<PlayerUpgradesData>
+    {
+        private const string StorageKeyRoot = "miraculoussurfers.player_upgrades";
+        private const string FormatVersion = "v1";
+        private const int DefaultIndex = 0;
+
+        protected override string Key => StorageKeyRoot;
+        protected override string Version => FormatVersion;
+
+        public override PlayerUpgradesData CreateDefault()
+        {
+            return new PlayerUpgradesData
+            {
+                LaunchPower = DefaultIndex,
+                Speed = DefaultIndex,
+                SteeringResponsiveness = DefaultIndex,
+                CollectibleValue = DefaultIndex
+            };
+        }
+
+        protected override bool IsValid(PlayerUpgradesData data)
+        {
+            return data != null
+                && data.LaunchPower >= 0
+                && data.Speed >= 0
+                && data.SteeringResponsiveness >= 0
+                && data.CollectibleValue >= 0;
+        }
+    }
+}
