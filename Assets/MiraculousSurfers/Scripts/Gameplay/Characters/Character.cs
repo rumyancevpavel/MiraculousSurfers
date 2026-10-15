@@ -16,6 +16,8 @@ namespace MiraculousSurfers.Gameplay.Characters
             TraveledDistance = 0f;
         }
 
+        public virtual void ResetToSpawn() { }
+
         protected void RaiseSlowedDown() => SlowedDown?.Invoke();
         protected void RaiseCrashed() => Crashed?.Invoke();
         protected void RaiseMomentumEnded() => MomentumEnded?.Invoke(TraveledDistance);

@@ -15,8 +15,13 @@ namespace MiraculousSurfers.Gameplay
         [Header("Flow")]
         [SerializeField] private GameplayState _aimState;
 
+        [Header("Refs")]
+        [SerializeField] private Characters.Character _character;
+
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
+            if (_character != null) _character.ResetToSpawn();
+
             _cameraRig.Activate();
             await _cameraRig.AnimateToAsync(_waitingPreset, ct: ct);
             if (ct.IsCancellationRequested) return;

@@ -2,6 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace MiraculousSurfers.Gameplay
@@ -66,6 +67,7 @@ namespace MiraculousSurfers.Gameplay
 
         private void OnDragStart(InputAction.CallbackContext _)
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
             if (_chargeState != null) Machine.GoTo(_chargeState).Forget();
         }
 
