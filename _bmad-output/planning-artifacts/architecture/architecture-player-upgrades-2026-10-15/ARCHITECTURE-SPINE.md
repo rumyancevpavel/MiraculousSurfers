@@ -62,22 +62,22 @@ From `spec-save-system` (binding, read-only):
 ### AD-4 — `IUpgradeService` is the one public contract
 - **Binds:** gameplay reads, future HomeScreenUI
 - **Prevents:** divergent param addressing; UI and gameplay coupling to internals
-- **Rule:** both UI and gameplay bind to `IUpgradeService` keyed by the `UpgradeParam` enum `{ LaunchPower, Speed, SteeringResponsiveness, CollectibleValue }`: raw queries `float GetValue(param)`, `int GetNextCost(param)`, `bool CanUpgrade(param)`, plus `int GetIndex(param)` / `int GetMaxIndex(param)` for a UI `currentUpgrade/MaxUpgrades` progress bar; command `IResult<UpgradePurchase> TryUpgrade(param)`; `event Action<UpgradeParam> Changed`. Gameplay reads multipliers via `GetValue`, not off `PlayerUpgradesData`. `GetNextCost` returns `0` when `HasNext` is false (maxed) — callers gate price display on `CanUpgrade`/`HasNext`. `Changed` fires whenever the in-memory index actually changes (`Applied=true`), independent of `Persisted`, so UI refreshes even if the save failed.
+- **Rule:** both UI and gameplay bind to `IUpgradeService` keyed by the `UpgradeParam` enum `{ LaunchPower, Speed, SteeringResponsiveness, CollectibleValue }`: raw queries `float GetValue(param)`, `int GetNextCost(param)`, `bool CanUpgrade(param)`, plus `int GetIndex(param)` / `int GetMaxIndex(param)` for a UI `currentUpgrade/MaxUpgrades` progress bar; command `UniTask<IResult<UpgradePurchase>> TryUpgrade(param)`; `event Action<UpgradeParam> Changed`. Gameplay reads multipliers via `GetValue`, not off `PlayerUpgradesData`. `GetNextCost` returns `0` when `HasNext` is false (maxed) — callers gate price display on `CanUpgrade`/`HasNext`. `Changed` fires whenever the in-memory index actually changes (`Applied=true`), independent of `Persisted`, so UI refreshes even if the save failed.
 
 ### AD-5 — Fallible ops reuse `Core.Result`; expected outcomes are `Ok`
 - **Binds:** `TryUpgrade` and any future fallible upgrade op
 - **Prevents:** exceptions-as-control-flow; bespoke result types per system
-- **Rule:** `TryUpgrade` returns `IResult<UpgradePurchase>` (`UpgradePurchase { bool Applied; bool Persisted; int NewIndex; float NewValue }`). `Ok` for every *expected* outcome — unaffordable or maxed → `Applied=false`; applied-but-save-failed → `Persisted=false`. `Result.Fail(ex)` only for an unexpected throw. Pure queries return raw types.
+- **Rule:** `TryUpgrade` returns `UniTask<IResult<UpgradePurchase>>` (`UpgradePurchase { bool Applied; bool Persisted; int NewIndex; float NewValue }`). `Ok` for every *expected* outcome — unaffordable or maxed → `Applied=false`. `Result.Fail(ex)` only for an unexpected throw. Pure queries return raw types. Under B2 (AD-7) `Applied` implies `Persisted` (both sides persist or neither).
 
 ### AD-6 — Wallet is a single-currency injected contract
 - **Binds:** all affordability/charge paths
 - **Prevents:** upgrades reaching into a concrete wallet or a second balance source
-- **Rule:** upgrades depend only on `IWalletService` { `int Coins { get; }`, `bool TrySpend(int amount)` (atomic check-and-charge) }. One currency (coins); prices and balances are `int`. Implemented now by a non-persistent in-memory mock seeded with a starting balance; the real currency system must satisfy the same contract.
+- **Rule:** upgrades depend only on `IWalletService` { `int Coins { get; }` (sync read), `UniTask<bool> TrySpend(int)`, `UniTask AddCoins(int)`, `event Action Changed` }. One currency (coins); prices and balances are `int`. **Realized** by the durable `WalletService` (player-wallet spine AD-2), not a mock. (Superseded the original sync, mocked shape.)
 
-### AD-7 — Optimistic purchase integrity (D1)
+### AD-7 — Refund-based purchase integrity (D2)
 - **Binds:** `TryUpgrade`
-- **Prevents:** a caller assuming a purchase was durably saved; premature cross-system transactionality
-- **Rule:** purchase order is `TrySpend(price)` → bump index in memory → `SaveAsync`. If the save fails, keep the in-memory upgrade (memory is source of truth), log it, and return `Persisted=false`. No refund/rollback while the wallet is non-persistent (see Deferred).
+- **Prevents:** a durable coin debit outliving a failed upgrade persist ("paid for nothing")
+- **Rule:** purchase order is `await TrySpend(price)` → bump index → `await SaveAsync`. On save **failure**, `await AddCoins(price)` (refund) + revert the index, and return `Applied=false`. Both sides persist or neither; the refund's own save is best-effort (logged). (Tightened from D1 optimistic once the wallet became durable — player-wallet spine AD-4.)
 
 ### AD-8 — One LifetimeScope owns all four services [ADOPTED]
 - **Binds:** DI registration

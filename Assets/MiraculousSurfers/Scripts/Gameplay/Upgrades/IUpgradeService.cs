@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Core;
 
 namespace MiraculousSurfers.Gameplay.Upgrades
@@ -12,6 +13,6 @@ namespace MiraculousSurfers.Gameplay.Upgrades
         float GetValue(UpgradeParam param);
         int GetNextCost(UpgradeParam param);
         bool CanUpgrade(UpgradeParam param);
-        IResult<UpgradePurchase> TryUpgrade(UpgradeParam param);
+        UniTask<IResult<UpgradePurchase>> TryUpgrade(UpgradeParam param);
     }
 }

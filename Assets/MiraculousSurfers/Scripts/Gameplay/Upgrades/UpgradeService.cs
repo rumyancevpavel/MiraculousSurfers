@@ -56,7 +56,7 @@ namespace MiraculousSurfers.Gameplay.Upgrades
             return _config.HasNext(param, index) && _wallet.Coins >= _config.Price(param, index + 1);
         }
 
-        public IResult<UpgradePurchase> TryUpgrade(UpgradeParam param)
+        public async UniTask<IResult<UpgradePurchase>> TryUpgrade(UpgradeParam param)
         {
             try
             {
@@ -67,17 +67,25 @@ namespace MiraculousSurfers.Gameplay.Upgrades
                 }
 
                 var price = _config.Price(param, index + 1);
-                if (!_wallet.TrySpend(price))
+                if (!await _wallet.TrySpend(price))
                 {
                     return Result.Ok(new UpgradePurchase(false, false, index, _config.Value(param, index)));
                 }
 
                 var newIndex = index + 1;
                 SetIndex(param, newIndex);
-                var persisted = _save.SaveAsync(_data).GetAwaiter().GetResult().Success;
+                var saved = await _save.SaveAsync(_data);
+                if (!saved.Success)
+                {
+                    SetIndex(param, index);
+                    await _wallet.AddCoins(price);
+                    UnityEngine.Debug.LogWarning($"Upgrade save failed for {param}; refunded {price} coins and reverted.");
+                    return Result.Ok(new UpgradePurchase(false, false, index, _config.Value(param, index)));
+                }
+
                 var newValue = _config.Value(param, newIndex);
                 Changed?.Invoke(param);
-                return Result.Ok(new UpgradePurchase(true, persisted, newIndex, newValue));
+                return Result.Ok(new UpgradePurchase(true, true, newIndex, newValue));
             }
             catch (Exception exception)
             {

@@ -3,6 +3,7 @@ id: SPEC-player-upgrades
 companions:
   - ../../planning-artifacts/architecture/architecture-player-upgrades-2026-10-15/ARCHITECTURE-SPINE.md
   - ../spec-save-system/SPEC.md
+  - ../spec-player-wallet/SPEC.md
 sources: []
 ---
 
@@ -44,9 +45,9 @@ A vision to realize: MiraculousSurfers needs a progression hook — players spen
   - **intent:** Consumers (the future HomeScreenUI) are notified when a param upgrades, without the service knowing about UI.
   - **success:** A subscriber to `IUpgradeService.Changed` receives the `UpgradeParam` after a successful purchase — including when `Persisted=false`.
 
-- **CAP-8** — Optimistic persistence outcome
-  - **intent:** A purchase reports whether it was durably saved, without blocking the upgrade on the save.
-  - **success:** With a forced save failure, `TryUpgrade` returns `Ok` with `Applied=true` and `Persisted=false`, and the in-memory index is still raised.
+- **CAP-8** — Consistent purchase (B2)
+  - **intent:** A purchase is all-or-nothing — it never leaves coins spent without the upgrade persisted.
+  - **success:** With a forced upgrade-save failure, the coins are refunded and the index reverts, and `TryUpgrade` returns `Ok` with `Applied=false`.
 
 ## Constraints
 
@@ -55,10 +56,10 @@ Each cites the governing spine AD (see the adopted `ARCHITECTURE-SPINE.md`).
 - **Persisted state is an int index per param (AD-2).** `PlayerUpgradesData` stores four `int` indices (default `0`); the multiplier value is derived via `IGameConfigurationSystem.Value`, never stored; a loaded index is clamped to `[0, MaxIndex(param)]`. This **revises already-shipped code** (`PlayerUpgradesData` floats→ints, `PlayerUpgradesSaveSystem` defaults/validation) and the **save-system spec's CAP-8** (defaults "all 1.0" → "indices default 0") — see Open Questions.
 - **Single stateful owner (AD-1).** `UpgradeService` alone holds live `PlayerUpgradesData`; gameplay and UI read only through `IUpgradeService`.
 - **Enum-keyed contract behaviour (AD-4).** Addressing is the `UpgradeParam` enum; `GetNextCost` returns `0` at max; `Changed` fires on any in-memory apply regardless of `Persisted`. The service also exposes `GetIndex(param)` and `GetMaxIndex(param)` so UI can render a `currentUpgrade/MaxUpgrades` progress bar per param.
-- **Fallible ops reuse `Core.Result` (AD-5).** `TryUpgrade` returns `IResult<UpgradePurchase>`; `Ok` for every expected outcome (unaffordable, maxed, applied-but-not-persisted), `Fail` only for an unexpected throw; pure queries return raw types.
+- **Fallible ops reuse `Core.Result` (AD-5).** `TryUpgrade` returns `UniTask<IResult<UpgradePurchase>>`; `Ok` for every expected outcome (unaffordable, maxed), `Fail` only for an unexpected throw; pure queries return raw types. Under B2, `Applied` implies `Persisted`.
 - **Tuning only via `IGameConfigurationSystem` (AD-3).** ScriptableObject-backed now (`LocalGameConfigurationSystem` reads a `GameConfiguration` SO); index-addressed `MaxIndex`/`Value`/`Price`/`HasNext`; no hardcoded steps or prices.
-- **Single-currency `int`-coin wallet, mocked (AD-6).** Upgrades depend only on `IWalletService { int Coins; bool TrySpend(int) }`; the mock is non-persistent in-memory; the real currency system must satisfy the same contract.
-- **Optimistic purchase integrity, D1 (AD-7).** Order is charge → bump index → persist; a save failure keeps the in-memory upgrade and reports `Persisted=false`; no refund/rollback while the wallet is non-persistent.
+- **Durable async wallet (AD-6, realized).** Upgrades depend only on `IWalletService { int Coins; UniTask<bool> TrySpend(int); UniTask AddCoins(int); event Changed }`, realized by the durable `WalletService` (see the adopted `spec-player-wallet`). (Superseded the original sync, mocked shape.)
+- **Refund-based purchase integrity, D2 (AD-7).** Order is `await TrySpend` → bump index → `await SaveAsync`; on save failure, refund via `AddCoins` and revert the index, returning `Applied=false`. Both sides persist or neither. (Tightened from D1 once the wallet became durable.)
 - **DI & lifecycle (AD-8, AD-9).** All four services register as `Singleton` in the single existing `GameplayLifetimeScope`; `UpgradeService` loads on VContainer `IAsyncStartable.StartAsync`, falling back to `CreateDefault()` on load failure.
 - **Inherited, binding.** Save-system invariants (stateless S1, Newtonsoft, key-suffix versioning with no migration, VContainer) and CLAUDE.md conventions (no comments, `var`, underscore privates, UniTask not coroutines, `int` coins/prices, code under `Assets/MiraculousSurfers/`).
 
