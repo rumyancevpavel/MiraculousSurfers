@@ -25,13 +25,14 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
             if (Character != null) Character.ResetToSpawn();
+            CharacterAnimator.SetTrigger(_enterStateTrigger);
 
             _cameraRig.Activate();
             await _cameraRig.AnimateToAsync(_waitingPreset, ct: ct);
             if (ct.IsCancellationRequested) return;
 
             Subscribe();
-            CharacterAnimator.SetTrigger(_enterStateTrigger);
+            
             await _homeScreenView.ShowAsync(ct);
         }
 

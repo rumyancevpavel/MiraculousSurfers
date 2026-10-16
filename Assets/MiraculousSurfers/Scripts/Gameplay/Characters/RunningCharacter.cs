@@ -22,7 +22,10 @@ namespace MiraculousSurfers.Gameplay.Characters
         [SerializeField] private float _minDrain = 0.05f;
 
         [Header("Steering")]
-        [SerializeField] private float _steerRatio = 0.2f;
+        [SerializeField] private float _steerRate = 90f;
+        [SerializeField] private float _maxHeading = 35f;
+        [SerializeField] private float _headingReturnRate = 120f;
+        [SerializeField] private float _steerFuelCost = 0.5f;
 
         [Header("Grounding")]
         [SerializeField] private float _gravity = 20f;
@@ -32,6 +35,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         private float _initialFuel;
         private float _speedMultiplier = 1f;
         private float _steerMultiplier = 1f;
+        private float _heading;
 
         private void Awake()
         {
@@ -54,6 +58,7 @@ namespace MiraculousSurfers.Gameplay.Characters
 
             _initialFuel = Mathf.Max(0.0001f, launchParams.Power * _fuelPerPower);
             _fuel = _initialFuel;
+            _heading = 0f;
 
             _steerInput?.action.Enable();
             _running = true;
@@ -66,6 +71,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             TraveledDistance = 0f;
             CurrentSpeed = 0f;
             SpeedFraction = 0f;
+            _heading = 0f;
             _steerInput?.action.Disable();
 
             if (_spawn == null) return;
@@ -91,15 +97,21 @@ namespace MiraculousSurfers.Gameplay.Characters
             float left = _leftBound != null ? _leftBound.position.x : float.NegativeInfinity;
             float right = _rightBound != null ? _rightBound.position.x : float.PositiveInfinity;
 
+            if (Mathf.Abs(steer) > 0.001f)
+                _heading = Mathf.Clamp(_heading + steer * _steerRate * _steerMultiplier * Time.deltaTime, -_maxHeading, _maxHeading);
+            else
+                _heading = Mathf.MoveTowards(_heading, 0f, _headingReturnRate * Time.deltaTime);
+
             float speed = _fuel * _fuelToSpeed * _speedMultiplier;
             CurrentSpeed = speed;
             SpeedFraction = Mathf.Clamp01(_fuel / _initialFuel);
 
-            float currentX = transform.position.x;
-            float lateral = steer * _steerRatio * _steerMultiplier * speed * Time.deltaTime;
-            float newX = Mathf.Clamp(currentX + lateral, left, right);
+            var headingRotation = Quaternion.Euler(0f, _heading, 0f);
+            transform.rotation = headingRotation;
 
-            Vector3 delta = Vector3.forward * (speed * Time.deltaTime);
+            float currentX = transform.position.x;
+            Vector3 delta = headingRotation * Vector3.forward * (speed * Time.deltaTime);
+            float newX = Mathf.Clamp(currentX + delta.x, left, right);
             delta.x = newX - currentX;
             delta.y = -_gravity * Time.deltaTime;
 
@@ -110,7 +122,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             TraveledDistance += travelled.magnitude;
 
             float frac = Mathf.Clamp01(_fuel / _initialFuel);
-            float drain = Mathf.Max(_drainCurve.Evaluate(frac), _minDrain);
+            float drain = Mathf.Max(_drainCurve.Evaluate(frac), _minDrain) + Mathf.Abs(steer) * _steerFuelCost;
             _fuel -= drain * Time.deltaTime;
 
             if (_fuel <= 0f)

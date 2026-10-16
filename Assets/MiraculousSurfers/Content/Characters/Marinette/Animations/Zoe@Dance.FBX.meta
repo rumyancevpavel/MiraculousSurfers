@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 9e4c97267c2d21b4e8890a4b7d5696b8
 ModelImporter:
-  serializedVersion: 20300
+  serializedVersion: 24600
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
@@ -12,14 +12,14 @@ ModelImporter:
     materialName: 0
     materialSearch: 1
     materialLocation: 1
+    searchTexturesGlobally: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -46,7 +46,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -56,7 +56,7 @@ ModelImporter:
       keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000u
       curves: []
       events: []
       transformMask:
@@ -74,8 +74,7 @@ ModelImporter:
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot/Bip001
-          L Toe0
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot/Bip001 L Toe0
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 R Thigh
         weight: 1
@@ -83,8 +82,7 @@ ModelImporter:
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot/Bip001
-          R Toe0
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot/Bip001 R Toe0
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine
         weight: 1
@@ -92,144 +90,99 @@ ModelImporter:
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0/Bip001 L Finger01
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0/Bip001 L Finger01
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1/Bip001 L Finger11
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1/Bip001 L Finger11
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2/Bip001 L Finger21
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2/Bip001 L Finger21
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3/Bip001 L Finger31
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3/Bip001 L Finger31
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001
-          L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4/Bip001 L Finger41
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4/Bip001 L Finger41
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Back_01
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Back_01
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Back_01/Hair_Back_02
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Back_01/Hair_Back_02
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Back_01/Hair_Back_02/Hair_Back_03
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Back_01/Hair_Back_02/Hair_Back_03
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Back_01/Hair_Back_02/Hair_Back_03/Hair_Back_04
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Back_01/Hair_Back_02/Hair_Back_03/Hair_Back_04
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Back_01/Hair_Back_02/Hair_Back_03/Hair_Back_04/Hair_Back_05
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Back_01/Hair_Back_02/Hair_Back_03/Hair_Back_04/Hair_Back_05
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00/Hair_Left_01
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00/Hair_Left_01
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00/Hair_Left_01/Hair_Left_02
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00/Hair_Left_01/Hair_Left_02
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03/Hair_Left_04
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03/Hair_Left_04
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03/Hair_Left_04/Hair_Left_05
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03/Hair_Left_04/Hair_Left_05
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03/Hair_Left_04/Hair_Left_05/Hair_Left_06
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Left_00/Hair_Left_01/Hair_Left_02/Hair_Left_03/Hair_Left_04/Hair_Left_05/Hair_Left_06
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Right_00
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Right_00
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Right_00/Hair_Right_01
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Right_00/Hair_Right_01
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Right_00/Hair_Right_01/Hair_Right_02
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Right_00/Hair_Right_01/Hair_Right_02
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Right_00/Hair_Right_01/Hair_Right_02/Hair_Right_03
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Right_00/Hair_Right_01/Hair_Right_02/Hair_Right_03
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Right_00/Hair_Right_01/Hair_Right_02/Hair_Right_03/Hair_Right_04
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Right_00/Hair_Right_01/Hair_Right_02/Hair_Right_03/Hair_Right_04
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001
-          Head/Hair_Right_00/Hair_Right_01/Hair_Right_02/Hair_Right_03/Hair_Right_04/Hair_Right_05
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Hair_Right_00/Hair_Right_01/Hair_Right_02/Hair_Right_03/Hair_Right_04/Hair_Right_05
         weight: 1
       - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0/Bip001 R Finger01
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0/Bip001 R Finger01
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1/Bip001 R Finger11
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1/Bip001 R Finger11
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2/Bip001 R Finger21
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2/Bip001 R Finger21
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3/Bip001 R Finger31
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3/Bip001 R Finger31
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4
         weight: 1
-      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001
-          R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4/Bip001 R Finger41
+      - path: Bip_LadyNoir/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4/Bip001 R Finger41
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -242,10 +195,14 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    preBakeConvexCollisionMesh: 0
+    preBakeTriangleCollisionMesh: 0
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -257,6 +214,12 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    importUVs: -1
+    importVertexColors: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -267,6 +230,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -275,6 +239,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+    calculateBlendshapeNormalsDeltaFromImportedNormals: 1
   referencedClips: []
   importAnimation: 1
   humanDescription:
@@ -936,13 +901,13 @@ ModelImporter:
     hasTranslationDoF: 1
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: bf334d13f09f8a540a80bb3305e71cec,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: bf334d13f09f8a540a80bb3305e71cec, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
