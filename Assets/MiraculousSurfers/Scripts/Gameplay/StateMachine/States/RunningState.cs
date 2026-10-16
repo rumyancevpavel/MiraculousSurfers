@@ -22,7 +22,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Animation")]
         [SerializeField] private string _enterStateTrigger = "RunningState";
         [SerializeField] private string _runningSpeedParam = "RunningState_RunningSpeed";
-        [SerializeField] private float _animSpeedScale = 1f;
+        [SerializeField] private AnimationCurve _speedToBlend = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         
         private IScoreManager _scoreManager;
         private LaunchParams _launchParams;
@@ -65,7 +65,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         {
             if (!_running || Character == null) return;
             if (_runningScreenView != null) _runningScreenView.SetDistance(Character.TraveledDistance);
-            if (CharacterAnimator != null) CharacterAnimator.SetFloat(_runningSpeedParam, Character.SpeedFraction * _animSpeedScale);
+            if (CharacterAnimator != null) CharacterAnimator.SetFloat(_runningSpeedParam, _speedToBlend.Evaluate(Character.SpeedFraction));
         }
 
         private void OnCrashed()

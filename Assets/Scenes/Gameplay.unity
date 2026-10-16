@@ -1350,6 +1350,41 @@ MonoBehaviour:
   _newRecordState: {fileID: 0}
   _tryEndedState: {fileID: 0}
   _crashState: {fileID: 1099449460}
+  _enterStateTrigger: RunningState
+  _runningSpeedParam: RunningState_RunningSpeed
+  _speedToBlend:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.09183703
+      value: 0.58086884
+      inSlope: 0.6262442
+      outSlope: 0.6262442
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11016594
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1099449462
 MonoBehaviour:
   m_ObjectHideFlags: 0
