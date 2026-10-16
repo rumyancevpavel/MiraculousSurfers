@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Characters;
 using UnityEngine;
 using VContainer;
 
@@ -8,6 +9,11 @@ namespace MiraculousSurfers.Gameplay.StateMachine
     public class GameplayStateMachine : MonoBehaviour
     {
         [SerializeField] private GameplayState _initialState;
+        [SerializeField] private Character _character;
+        [SerializeField] private Animator _characterAnimator;
+
+        public Character Character => _character;
+        public Animator CharacterAnimator => _characterAnimator;
 
         private GameplayState Current { get; set; }
 

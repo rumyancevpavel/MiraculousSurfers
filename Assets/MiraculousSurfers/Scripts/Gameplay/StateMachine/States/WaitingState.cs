@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Gameplay.UI;
+using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 
 namespace MiraculousSurfers.Gameplay.StateMachine.States
@@ -12,15 +13,17 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [SerializeField] private OrbitPreset _waitingPreset;
         [SerializeField] private HomeScreenUiView _homeScreenView;
 
+        [Header("Animation")]
+        [SerializeField] private string _celebrateTrigger = "WaitState_UpgradePurchased";
+
         [Header("Flow")]
         [SerializeField] private GameplayState _aimState;
 
-        [Header("Refs")]
-        [SerializeField] private Characters.Character _character;
+        protected override GameplayStateType StateType => GameplayStateType.Wait;
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
-            if (_character != null) _character.ResetToSpawn();
+            if (Character != null) Character.ResetToSpawn();
 
             _cameraRig.Activate();
             await _cameraRig.AnimateToAsync(_waitingPreset, ct: ct);
@@ -37,14 +40,25 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnTapToPlay() => Machine.GoTo(_aimState).Forget();
 
+        private void OnUpgradePurchased(UpgradeParam param)
+        {
+            if (CharacterAnimator != null) CharacterAnimator.SetTrigger(_celebrateTrigger);
+        }
+
         protected override void Subscribe()
         {
             if (_homeScreenView != null) _homeScreenView.TapToPlay += OnTapToPlay;
+            if (Upgrades != null)
+            {
+                Upgrades.Changed -= OnUpgradePurchased;
+                Upgrades.Changed += OnUpgradePurchased;
+            }
         }
 
         protected override void Unsubscribe()
         {
             if (_homeScreenView != null) _homeScreenView.TapToPlay -= OnTapToPlay;
+            if (Upgrades != null) Upgrades.Changed -= OnUpgradePurchased;
         }
     }
 }

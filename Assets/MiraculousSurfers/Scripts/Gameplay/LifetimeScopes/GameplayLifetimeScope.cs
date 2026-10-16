@@ -29,7 +29,7 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();
             builder.RegisterComponentInHierarchy<PlayerWalletView>();
             builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);
-            builder.RegisterComponentInHierarchy<ScoreManager>();
+            builder.RegisterComponentInHierarchy<ScoreManager>().As<IScoreManager>();
         }
     }
 }

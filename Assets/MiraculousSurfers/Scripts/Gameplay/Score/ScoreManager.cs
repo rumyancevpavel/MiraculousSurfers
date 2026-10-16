@@ -6,7 +6,7 @@ using VContainer;
 
 namespace MiraculousSurfers.Gameplay.Score
 {
-    public class ScoreManager : MonoBehaviour
+    public class ScoreManager : MonoBehaviour, IScoreManager
     {
         [SerializeField] private GameObject _indicatorPrefab;
         [SerializeField] private Transform _indicatorParent;
@@ -17,7 +17,6 @@ namespace MiraculousSurfers.Gameplay.Score
         private GameObject _indicator;
 
         public float Best => _data != null ? _data.BestDistance : 0f;
-        public bool IsNewRecord { get; private set; }
 
         [Inject]
         public void Construct(IDataSaveSystem<PlayerHighScoreData> save, GameplayEventBus events)
@@ -25,12 +24,6 @@ namespace MiraculousSurfers.Gameplay.Score
             _save = save;
             _events = events;
             _data = save.CreateDefault();
-            _events.Subscribe<RunEnded>(GameplayEventType.RunEnded, OnRunEnded);
-        }
-
-        private void OnDestroy()
-        {
-            _events?.Unsubscribe<RunEnded>(GameplayEventType.RunEnded, OnRunEnded);
         }
 
         private void Start()
@@ -45,24 +38,20 @@ namespace MiraculousSurfers.Gameplay.Score
             if (_data.HasRecord) PlaceIndicator(new Vector3(_data.PosX, _data.PosY, _data.PosZ));
         }
 
-        private void OnRunEnded(RunEnded runEnded)
+        public bool ReportDistance(float distance, Vector3 position)
         {
-            if (runEnded.Distance <= _data.BestDistance)
-            {
-                IsNewRecord = false;
-                return;
-            }
+            if (distance <= _data.BestDistance) return false;
 
-            _data.BestDistance = runEnded.Distance;
-            _data.PosX = runEnded.Position.x;
-            _data.PosY = runEnded.Position.y;
-            _data.PosZ = runEnded.Position.z;
+            _data.BestDistance = distance;
+            _data.PosX = position.x;
+            _data.PosY = position.y;
+            _data.PosZ = position.z;
             _data.HasRecord = true;
-            IsNewRecord = true;
 
             _save.SaveAsync(_data).Forget();
-            PlaceIndicator(runEnded.Position);
-            _events.Publish(GameplayEventType.NewHighScore, new NewHighScore(runEnded.Distance, runEnded.Position));
+            PlaceIndicator(position);
+            _events.Publish(GameplayEventType.NewHighScore, new NewHighScore(distance, position));
+            return true;
         }
 
         private void PlaceIndicator(Vector3 position)

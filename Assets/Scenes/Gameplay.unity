@@ -742,82 +742,17 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &587029701 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8934280850970809062, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+--- !u!114 &587029703 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6169745233790694000, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
   m_PrefabInstance: {fileID: 2893241890803435873}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &587029703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 587029701}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af4f5ad08df074b4eab9f41e281a34bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.Characters.RunningCharacter
-  _controller: {fileID: 587029704}
-  _spawn: {fileID: 223257398}
-  _leftBound: {fileID: 607909750}
-  _rightBound: {fileID: 833350120}
-  _steerInput: {fileID: -1246895598473198080, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _fuelPerPower: 0.2
-  _fuelToSpeed: 2
-  _drainCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _minDrain: 0.05
-  _steerRatio: 0.2
-  _gravity: 20
---- !u!143 &587029704
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 587029701}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 6.96
-  m_Radius: 1
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 3.4, z: 0}
 --- !u!1 &601715826
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,8 +1236,8 @@ GameObject:
   - component: {fileID: 1099449458}
   - component: {fileID: 1099449457}
   - component: {fileID: 1099449461}
-  - component: {fileID: 1099449460}
   - component: {fileID: 1099449462}
+  - component: {fileID: 1099449460}
   m_Layer: 0
   m_Name: GameplayStateMachine
   m_TagString: Untagged
@@ -1328,8 +1263,8 @@ MonoBehaviour:
     Vertical: 15
     Radius: 1
   _homeScreenView: {fileID: 1592535336}
+  _celebrateTrigger: WaitState_UpgradePurchased
   _aimState: {fileID: 1099449462}
-  _character: {fileID: 587029703}
 --- !u!114 &1099449458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1343,6 +1278,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.GameplayStateMachine
   _initialState: {fileID: 1099449457}
+  _character: {fileID: 587029703}
+  _characterAnimator: {fileID: 1917097596}
 --- !u!4 &1099449459
 Transform:
   m_ObjectHideFlags: 0
@@ -1383,9 +1320,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8dd16085c7664504ac8d2e881e8fe1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.RunningState
-  _character: {fileID: 587029703}
   _runningScreenView: {fileID: 2077311708}
-  _evaluateDistanceState: {fileID: 1099449460}
+  _newRecordState: {fileID: 0}
+  _tryEndedState: {fileID: 0}
   _crashState: {fileID: 1099449460}
 --- !u!114 &1099449462
 MonoBehaviour:
@@ -1696,7 +1633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1425870866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3105,6 +3042,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 39.086338, y: 0.1, z: 450.01437}
   m_Center: {x: -0.0000019073486, y: -0.1, z: 225.00002}
+--- !u!95 &1917097596 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3536101388107344553, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+  m_PrefabInstance: {fileID: 2893241890803435873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1929227548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3453,18 +3395,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -3504,29 +3434,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 281988448093492898, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3536101388107344553, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 6169745233790694000, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+      propertyPath: _spawn
+      value: 
+      objectReference: {fileID: 223257398}
+    - target: {fileID: 6169745233790694000, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+      propertyPath: _leftBound
+      value: 
+      objectReference: {fileID: 607909750}
+    - target: {fileID: 6169745233790694000, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+      propertyPath: _rightBound
+      value: 
+      objectReference: {fileID: 833350120}
     - target: {fileID: 8934280850970809062, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
       propertyPath: m_Name
       value: MarinetteArmature
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2205959532149868477, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8934280850970809062, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 587029704}
-    - targetCorrespondingSourceObject: {fileID: 8934280850970809062, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 587029703}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd60b30b025ae4ece9566c015cf3a960, type: 3}
 --- !u!4 &2893241890803435874 stripped
 Transform:

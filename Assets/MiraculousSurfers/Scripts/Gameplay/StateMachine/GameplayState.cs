@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace MiraculousSurfers.Gameplay.StateMachine
         protected GameplayStateMachine Machine { get; private set; }
         protected IUpgradeService Upgrades { get; private set; }
         protected GameplayEventBus Events { get; private set; }
+        protected Character Character => Machine != null ? Machine.Character : null;
+        protected Animator CharacterAnimator => Machine != null ? Machine.CharacterAnimator : null;
+        protected abstract GameplayStateType StateType { get; }
 
         [Inject]
         public void InjectDependencies(IUpgradeService upgrades, GameplayEventBus events)
@@ -29,6 +33,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine
             Unsubscribe();
             await OnExitAsync(ct);
         }
+
+        protected void OnEnable() => Subscribe();
 
         protected virtual void OnDisable() => Unsubscribe();
 

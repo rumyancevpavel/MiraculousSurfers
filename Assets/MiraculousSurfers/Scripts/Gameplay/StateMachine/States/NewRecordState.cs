@@ -8,7 +8,6 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
     public class NewRecordState : GameplayState
     {
         [Header("Refs")]
-        [SerializeField] private Animator _characterAnimator;
         [SerializeField] private string _happyTrigger = "Happy";
 
         [Header("Timing")]
@@ -17,9 +16,11 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
 
+        protected override GameplayStateType StateType => GameplayStateType.NewRecord;
+        
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
-            if (_characterAnimator != null) _characterAnimator.SetTrigger(_happyTrigger);
+            if (CharacterAnimator != null) CharacterAnimator.SetTrigger(_happyTrigger);
 
             await UniTask.Delay(TimeSpan.FromSeconds(_celebrationSeconds), cancellationToken: ct)
                          .SuppressCancellationThrow();

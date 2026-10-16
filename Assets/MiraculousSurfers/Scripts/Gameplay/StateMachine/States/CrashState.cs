@@ -8,7 +8,6 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
     public class CrashState : GameplayState
     {
         [Header("Refs")]
-        [SerializeField] private Animator _characterAnimator;
         [SerializeField] private string _dieTrigger = "Die";
 
         [Header("Timing")]
@@ -17,9 +16,11 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
 
+        protected override GameplayStateType StateType => GameplayStateType.Crashed;
+        
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
-            if (_characterAnimator != null) _characterAnimator.SetTrigger(_dieTrigger);
+            if (CharacterAnimator != null) CharacterAnimator.SetTrigger(_dieTrigger);
 
             await UniTask.Delay(TimeSpan.FromSeconds(_deathAnimSeconds), cancellationToken: ct)
                          .SuppressCancellationThrow();

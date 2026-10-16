@@ -29,6 +29,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         private float _charge;
         private Vector3 _direction = Vector3.forward;
 
+        protected override GameplayStateType StateType => GameplayStateType.AimCharge;
+
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
             await _cameraRig.AnimateToAsync(_behindPreset, _sweepDuration, ct, _sweepEase);

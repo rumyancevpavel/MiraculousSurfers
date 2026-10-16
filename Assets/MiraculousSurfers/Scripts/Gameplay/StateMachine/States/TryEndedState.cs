@@ -9,6 +9,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
 
+        protected override GameplayStateType StateType => GameplayStateType.TryEnded;
+        
         protected override UniTask OnEnterAsync(CancellationToken ct)
         {
             Machine.GoTo(_waitingState).Forget();
