@@ -172,6 +172,30 @@ MonoBehaviour:
   _maxDrag: 300
   _deadZone: 20
   _maxCharge: 100
+  _chargeResponse:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &87781454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,6 +1217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.UI.PlayerBalanceView
   _balanceText: {fileID: 1429960592}
+  _countDuration: 0.4
 --- !u!1 &833350119
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,6 +1289,7 @@ MonoBehaviour:
     Radius: 1
   _homeScreenView: {fileID: 1592535336}
   _celebrateTrigger: WaitState_UpgradePurchased
+  _enterStateTrigger: WaitState
   _aimState: {fileID: 1099449462}
 --- !u!114 &1099449458
 MonoBehaviour:
@@ -1368,7 +1394,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   _aimScreenView: {fileID: 1425870866}
   _chargeDragArea: {fileID: 87781453}
+  _enterStateTrigger: AimChargeState
   _minChargeToFire: 25
+  _maxPullDistance: 3
   _waitingState: {fileID: 1099449457}
   _runningState: {fileID: 1099449461}
 --- !u!1 &1191276473
@@ -3200,8 +3228,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 39.086338, y: 0.1, z: 450.01437}
-  m_Center: {x: -0.0000019073486, y: -0.1, z: 225.00002}
+  m_Size: {x: 39.086338, y: 0.10000001, z: 461.39752}
+  m_Center: {x: -0.0000019073486, y: -0.1, z: 219.30844}
 --- !u!224 &1982397112 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2840578868750926398, guid: 28d79e388312e42cc9a9171eec781664, type: 3}

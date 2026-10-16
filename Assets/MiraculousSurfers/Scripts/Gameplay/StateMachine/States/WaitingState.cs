@@ -15,7 +15,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         [Header("Animation")]
         [SerializeField] private string _celebrateTrigger = "WaitState_UpgradePurchased";
-
+        [SerializeField] private string _enterStateTrigger = "WaitState";
+        
         [Header("Flow")]
         [SerializeField] private GameplayState _aimState;
 
@@ -30,6 +31,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             if (ct.IsCancellationRequested) return;
 
             Subscribe();
+            CharacterAnimator.SetTrigger(_enterStateTrigger);
             await _homeScreenView.ShowAsync(ct);
         }
 

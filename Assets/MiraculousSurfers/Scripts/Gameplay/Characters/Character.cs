@@ -10,13 +10,19 @@ namespace MiraculousSurfers.Gameplay.Characters
         public event Action<float> MomentumEnded;
 
         public float TraveledDistance { get; protected set; }
+        public float CurrentSpeed { get; protected set; }
+        public float SpeedFraction { get; protected set; }
 
         public virtual void Launch(LaunchParams launchParams)
         {
             TraveledDistance = 0f;
+            CurrentSpeed = 0f;
+            SpeedFraction = 0f;
         }
 
         public virtual void ResetToSpawn() { }
+
+        public virtual void SetChargePull(float distance) { }
 
         protected void RaiseSlowedDown() => SlowedDown?.Invoke();
         protected void RaiseCrashed() => Crashed?.Invoke();

@@ -19,8 +19,12 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Input")]
         [SerializeField] private ChargeDragArea _chargeDragArea;
 
+        [Header("Animation")]
+        [SerializeField] private string _enterStateTrigger = "AimChargeState";
+        
         [Header("Tuning")]
         [SerializeField] private float _minChargeToFire = 25f;
+        [SerializeField] private float _maxPullDistance = 3f;
 
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
@@ -43,6 +47,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
                 _aimScreenView.SetChargingVisual(false);
                 await _aimScreenView.ShowAsync(ct);
             }
+            CharacterAnimator.SetTrigger(_enterStateTrigger);
         }
 
         protected override async UniTask OnExitAsync(CancellationToken ct)
@@ -50,11 +55,16 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             if (_aimScreenView != null) await _aimScreenView.HideAsync(ct);
         }
 
-        private void OnBack() => Machine.GoTo(_waitingState).Forget();
+        private void OnBack()
+        {
+            ApplyPull(0f);
+            Machine.GoTo(_waitingState).Forget();
+        }
 
         private void OnDragBegan()
         {
             _charge = 0f;
+            ApplyPull(0f);
             if (_aimScreenView != null)
             {
                 _aimScreenView.SetChargingVisual(true);
@@ -66,6 +76,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         {
             _charge = charge;
             _direction = direction;
+            ApplyPull(charge);
             if (_aimScreenView != null) _aimScreenView.SetCharge(charge);
         }
 
@@ -77,16 +88,27 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
                 var speedMultiplier = Upgrades.GetValue(UpgradeParam.Speed);
                 var steerMultiplier = Upgrades.GetValue(UpgradeParam.SteeringResponsiveness);
                 _runningState.Configure(new LaunchParams(power, direction, speedMultiplier, steerMultiplier));
+                _runningState.Bind(Machine);
+                _runningState.BeginRunningAnimation();
                 Machine.GoTo(_runningState).Forget();
                 return;
             }
 
             _charge = 0f;
+            ApplyPull(0f);
             if (_aimScreenView != null)
             {
                 _aimScreenView.SetChargingVisual(false);
                 _aimScreenView.SetCharge(0f);
             }
+        }
+
+        private void ApplyPull(float charge)
+        {
+            if (Character == null) return;
+            var max = _chargeDragArea != null ? _chargeDragArea.MaxCharge : 0f;
+            var normalized = max > 0f ? Mathf.Clamp01(charge / max) : 0f;
+            Character.SetChargePull(normalized * _maxPullDistance);
         }
 
         protected override void Subscribe()

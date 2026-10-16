@@ -236,10 +236,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100138, guid: 3512bba9a634dce469f5c32462e4e25d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5561527066197866962}
   m_SourcePrefab: {fileID: 100100000, guid: 3512bba9a634dce469f5c32462e4e25d, type: 3}
 --- !u!4 &3536101388099617987 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400138, guid: 3512bba9a634dce469f5c32462e4e25d, type: 3}
   m_PrefabInstance: {fileID: 3536101388100018121}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3536101388099918051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100138, guid: 3512bba9a634dce469f5c32462e4e25d, type: 3}
+  m_PrefabInstance: {fileID: 3536101388100018121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5561527066197866962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536101388099918051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775604f4a39c4616a52777017c3adf6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.Characters.AnimationEventsHandler

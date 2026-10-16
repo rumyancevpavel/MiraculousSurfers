@@ -42,6 +42,13 @@ namespace MiraculousSurfers.Gameplay.Characters
         {
             base.Launch(launchParams);
 
+            if (_spawn != null)
+            {
+                _controller.enabled = false;
+                transform.SetPositionAndRotation(_spawn.position, _spawn.rotation);
+                _controller.enabled = true;
+            }
+
             _speedMultiplier = launchParams.SpeedMultiplier;
             _steerMultiplier = launchParams.SteerMultiplier;
 
@@ -57,11 +64,22 @@ namespace MiraculousSurfers.Gameplay.Characters
             _running = false;
             _fuel = 0f;
             TraveledDistance = 0f;
+            CurrentSpeed = 0f;
+            SpeedFraction = 0f;
             _steerInput?.action.Disable();
 
             if (_spawn == null) return;
             _controller.enabled = false;
             transform.SetPositionAndRotation(_spawn.position, _spawn.rotation);
+            _controller.enabled = true;
+        }
+
+        public override void SetChargePull(float distance)
+        {
+            if (_spawn == null || _running) return;
+
+            _controller.enabled = false;
+            transform.SetPositionAndRotation(_spawn.position - Vector3.forward * Mathf.Max(0f, distance), _spawn.rotation);
             _controller.enabled = true;
         }
 
@@ -74,6 +92,8 @@ namespace MiraculousSurfers.Gameplay.Characters
             float right = _rightBound != null ? _rightBound.position.x : float.PositiveInfinity;
 
             float speed = _fuel * _fuelToSpeed * _speedMultiplier;
+            CurrentSpeed = speed;
+            SpeedFraction = Mathf.Clamp01(_fuel / _initialFuel);
 
             float currentX = transform.position.x;
             float lateral = steer * _steerRatio * _steerMultiplier * speed * Time.deltaTime;
@@ -96,6 +116,8 @@ namespace MiraculousSurfers.Gameplay.Characters
             if (_fuel <= 0f)
             {
                 _fuel = 0f;
+                CurrentSpeed = 0f;
+                SpeedFraction = 0f;
                 _running = false;
                 _steerInput?.action.Disable();
                 RaiseMomentumEnded();
