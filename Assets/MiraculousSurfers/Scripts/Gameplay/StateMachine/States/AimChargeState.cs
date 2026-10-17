@@ -22,6 +22,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         [Header("Animation")]
         [SerializeField] private string _enterStateTrigger = "AimChargeState";
+        [SerializeField] private string _isChargingParam = "AimChargeState_IsCharging";
         
         [Header("Tuning")]
         [SerializeField] private float _minChargeToFire = 25f;
@@ -49,15 +50,19 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
                 await _aimScreenView.ShowAsync(ct);
             }
             CharacterAnimator.SetTrigger(_enterStateTrigger);
+            SetCharging(false);
         }
 
-        protected override async UniTask OnExitAsync(CancellationToken ct)
+        protected override UniTask OnExitAsync(CancellationToken ct)
         {
-            if (_aimScreenView != null) await _aimScreenView.HideAsync(ct);
+            SetCharging(false);
+            if (_aimScreenView != null) _aimScreenView.HideAsync(ct).Forget();
+            return UniTask.CompletedTask;
         }
 
         private void OnBack()
         {
+            SetCharging(false);
             ApplyPull(0f);
             Machine.GoTo(_waitingState).Forget();
         }
@@ -65,6 +70,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         private void OnDragBegan()
         {
             _charge = 0f;
+            SetCharging(true);
             ApplyPull(0f);
             if (_aimScreenView != null)
             {
@@ -83,6 +89,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnDragEnded(float charge, Vector3 direction)
         {
+            SetCharging(false);
+
             if (charge >= _minChargeToFire)
             {
                 var power = charge * Upgrades.GetValue(UpgradeParam.LaunchPower);
@@ -102,6 +110,11 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
                 _aimScreenView.SetChargingVisual(false);
                 _aimScreenView.SetCharge(0f);
             }
+        }
+
+        private void SetCharging(bool value)
+        {
+            if (CharacterAnimator != null) CharacterAnimator.SetBool(_isChargingParam, value);
         }
 
         private void ApplyPull(float charge)

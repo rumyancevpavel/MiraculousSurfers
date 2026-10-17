@@ -34,10 +34,6 @@ namespace MiraculousSurfers.Gameplay.StateMachine
             await OnExitAsync(ct);
         }
 
-        protected void OnEnable() => Subscribe();
-
-        protected virtual void OnDisable() => Unsubscribe();
-
         protected abstract UniTask OnEnterAsync(CancellationToken ct);
 
         protected virtual UniTask OnExitAsync(CancellationToken ct) => UniTask.CompletedTask;
