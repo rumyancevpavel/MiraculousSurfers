@@ -1,6 +1,9 @@
 using System;
+using MiraculousSurfers.Gameplay.Collectibles;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MiraculousSurfers.Configuration
 {
@@ -33,8 +36,33 @@ namespace MiraculousSurfers.Configuration
             public UpgradeStep[] Steps => _steps;
         }
 
-        [SerializeField] private UpgradeLadder[] _ladders;
+        [Serializable]
+        public class CollectibleReward
+        {
+            [SerializeField] private CollectibleKind _kind;
+            [SerializeField] private int _coins;
 
-        public UpgradeLadder[] Ladders => _ladders;
+            public CollectibleKind Kind => _kind;
+            public int Coins => _coins;
+        }
+
+        [Serializable]
+        public class AudioEntry
+        {
+            [SerializeField] private GameplayEventType _event;
+            [SerializeField] private AudioClip[] _clips;
+
+            public GameplayEventType Event => _event;
+            public AudioClip[] Clips => _clips;
+        }
+
+        [FormerlySerializedAs("_ladders")]
+        [SerializeField] private UpgradeLadder[] _powerupsLadders;
+        [SerializeField] private CollectibleReward[] _collectibleRewards;
+        [SerializeField] private AudioEntry[] _audioEntries;
+
+        public UpgradeLadder[] PowerupsLadders => _powerupsLadders;
+        public CollectibleReward[] CollectibleRewards => _collectibleRewards;
+        public AudioEntry[] AudioEntries => _audioEntries;
     }
 }

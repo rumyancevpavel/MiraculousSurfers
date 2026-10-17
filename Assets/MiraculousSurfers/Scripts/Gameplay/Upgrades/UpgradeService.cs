@@ -5,6 +5,7 @@ using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Core;
 using MiraculousSurfers.Data;
 using MiraculousSurfers.Economy;
+using MiraculousSurfers.Gameplay.Events;
 using VContainer.Unity;
 
 namespace MiraculousSurfers.Gameplay.Upgrades
@@ -14,16 +15,18 @@ namespace MiraculousSurfers.Gameplay.Upgrades
         private readonly IDataSaveSystem<PlayerUpgradesData> _save;
         private readonly IGameConfigurationSystem _config;
         private readonly IWalletService _wallet;
+        private readonly GameplayEventBus _events;
 
         private PlayerUpgradesData _data;
 
         public event Action<UpgradeParam> Changed;
 
-        public UpgradeService(IDataSaveSystem<PlayerUpgradesData> save, IGameConfigurationSystem config, IWalletService wallet)
+        public UpgradeService(IDataSaveSystem<PlayerUpgradesData> save, IGameConfigurationSystem config, IWalletService wallet, GameplayEventBus events)
         {
             _save = save;
             _config = config;
             _wallet = wallet;
+            _events = events;
             _data = save.CreateDefault();
         }
 
@@ -85,6 +88,7 @@ namespace MiraculousSurfers.Gameplay.Upgrades
 
                 var newValue = _config.Value(param, newIndex);
                 Changed?.Invoke(param);
+                _events.Publish(GameplayEventType.Upgrade, new GameSignal());
                 return Result.Ok(new UpgradePurchase(true, true, newIndex, newValue));
             }
             catch (Exception exception)

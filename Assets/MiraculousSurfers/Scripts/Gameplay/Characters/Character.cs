@@ -1,4 +1,5 @@
 using System;
+using MiraculousSurfers.Gameplay.Collectibles;
 using UnityEngine;
 
 namespace MiraculousSurfers.Gameplay.Characters
@@ -8,7 +9,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         public event Action SlowedDown;
         public event Action Crashed;
         public event Action<float> MomentumEnded;
-        public event Action<int> CoinPickedUp;
+        public event Action<CollectibleKind> CollectiblePickedUp;
 
         public float TraveledDistance { get; protected set; }
         public float CurrentSpeed { get; protected set; }
@@ -28,6 +29,6 @@ namespace MiraculousSurfers.Gameplay.Characters
         protected void RaiseSlowedDown() => SlowedDown?.Invoke();
         protected void RaiseCrashed() => Crashed?.Invoke();
         protected void RaiseMomentumEnded() => MomentumEnded?.Invoke(TraveledDistance);
-        protected void RaiseCoinPickedUp(int value) => CoinPickedUp?.Invoke(value);
+        protected void RaiseCollectiblePickedUp(CollectibleKind kind) => CollectiblePickedUp?.Invoke(kind);
     }
 }

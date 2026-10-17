@@ -5,5 +5,14 @@ namespace MiraculousSurfers.Gameplay.Events
         CoinCollected = 0,
         RunEnded = 1,
         NewHighScore = 2,
+        UpgradeRequested = 3,
+        Crashed = 4,
+        GiftBoxCollected = 5,
+        CharacterBeginsRunning = 6,
+        SingleStep = 7,
+        Upgrade = 8,
+        NewRecord = 9,
+        RunMusicStarted = 10,
+        RunMusicStopped = 11,
     }
 }

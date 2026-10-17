@@ -1,14 +1,7 @@
-using UnityEngine;
-
 namespace MiraculousSurfers.Gameplay.Collectibles
 {
-    [RequireComponent(typeof(Collider))]
-    public class Coin : MonoBehaviour
+    public class Coin : Collectible
     {
-        [SerializeField] private int _value = 10;
-
-        public int Value => _value;
-
-        public void Collect() => Destroy(gameObject);
+        public override CollectibleKind Kind => CollectibleKind.MacaroonCoin;
     }
 }

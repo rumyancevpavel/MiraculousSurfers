@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a88613b87aa7464eb25ee1bd076f88a, type: 3}
   m_Name: GameConfiguration
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Configuration.GameConfiguration
-  _ladders:
+  _powerupsLadders:
   - _param: 0
     _displayName: Power
     _icon: {fileID: 21300000, guid: 18254808782e34f50ada529d553df760, type: 3}
@@ -57,3 +57,40 @@ MonoBehaviour:
       _price: 200
     - _value: 1.6
       _price: 300
+  _collectibleRewards:
+  - _kind: 0
+    _coins: 10
+  - _kind: 1
+    _coins: 50
+  _audioEntries:
+  - _event: 3
+    _clips:
+    - {fileID: 8300000, guid: 9b39f8aaa76583640ab6feee5fccf7bb, type: 3}
+    - {fileID: 8300000, guid: d617f36a1437a554ca9b211458b8bb19, type: 3}
+    - {fileID: 8300000, guid: 2331db901912dc345abf9a8a03c283b1, type: 3}
+  - _event: 0
+    _clips:
+    - {fileID: 8300000, guid: 94c01917b3a671b42a552c4dc3717ccd, type: 3}
+    - {fileID: 8300000, guid: 9a91dfc4225f1e8448d027b49e7340d2, type: 3}
+    - {fileID: 8300000, guid: 94c1dedf4d64fa0438bfe755ee2873ed, type: 3}
+  - _event: 4
+    _clips:
+    - {fileID: 8300000, guid: 0bc22978ca58141f0b81b14db601e831, type: 3}
+  - _event: 5
+    _clips:
+    - {fileID: 8300000, guid: 39b19994be7e5486c990e367d7651175, type: 3}
+  - _event: 6
+    _clips:
+    - {fileID: 8300000, guid: f001bd82bab7844ef8d1829f48af43fb, type: 3}
+  - _event: 7
+    _clips:
+    - {fileID: 8300000, guid: 07894144441227c42a64ea85bd9a1c29, type: 3}
+  - _event: 8
+    _clips:
+    - {fileID: 8300000, guid: f7b1570aac321584592ce20ef9a367f8, type: 3}
+  - _event: 9
+    _clips:
+    - {fileID: 8300000, guid: f8e3ea0fdbe39624fb491159a8677785, type: 3}
+  - _event: 10
+    _clips:
+    - {fileID: 8300000, guid: da3212a3b256043f2bd72d5e7363e3a9, type: 3}

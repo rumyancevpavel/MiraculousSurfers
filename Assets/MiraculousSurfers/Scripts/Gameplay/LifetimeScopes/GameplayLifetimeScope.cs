@@ -1,6 +1,8 @@
 using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Data;
 using MiraculousSurfers.Economy;
+using MiraculousSurfers.Gameplay.Audio;
+using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.StateMachine;
@@ -27,6 +29,8 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterEntryPoint<WalletService>(Lifetime.Singleton);
             builder.Register<GameplayEventBus>(Lifetime.Singleton);
             builder.RegisterEntryPoint<UpgradeService>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<AudioManager>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<AnimationEventsHandler>();
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();
             builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);

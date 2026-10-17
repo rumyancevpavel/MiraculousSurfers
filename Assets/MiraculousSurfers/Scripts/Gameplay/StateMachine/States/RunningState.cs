@@ -1,7 +1,9 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Characters;
+using MiraculousSurfers.Gameplay.Collectibles;
 using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.UI;
@@ -28,16 +30,18 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         
         private IScoreManager _scoreManager;
         private IWalletService _wallet;
+        private IGameConfigurationSystem _config;
         private LaunchParams _launchParams;
         private bool _running;
 
         protected override GameplayStateType StateType => GameplayStateType.Running;
 
         [Inject]
-        public void InjectRunning(IScoreManager scoreManager, IWalletService wallet)
+        public void InjectRunning(IScoreManager scoreManager, IWalletService wallet, IGameConfigurationSystem config)
         {
             _scoreManager = scoreManager;
             _wallet = wallet;
+            _config = config;
         }
 
         public void Configure(LaunchParams launchParams)
@@ -55,6 +59,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             Subscribe();
             Character.Launch(_launchParams);
             _running = true;
+            Events.Publish(GameplayEventType.CharacterBeginsRunning, new GameSignal());
+            Events.Publish(GameplayEventType.RunMusicStarted, new GameSignal());
 
             if (_runningScreenView != null)
             {
@@ -65,6 +71,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         protected override UniTask OnExitAsync(CancellationToken ct)
         {
+            Events.Publish(GameplayEventType.RunMusicStopped, new GameSignal());
             if (_runningScreenView != null) _runningScreenView.HideAsync(ct).Forget();
             return UniTask.CompletedTask;
         }
@@ -79,6 +86,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         private void OnCrashed()
         {
             Events.Publish(GameplayEventType.RunEnded, new RunEnded(Character.TraveledDistance, Character.transform.position, RunEndReason.Crashed));
+            Events.Publish(GameplayEventType.Crashed, new GameSignal());
             _scoreManager.ReportDistance(Character.TraveledDistance, Character.transform.position);
             Machine.GoTo(_crashState).Forget();
         }
@@ -92,12 +100,17 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnSlowedDown() { }
 
-        private void OnCoinPickedUp(int value)
+        private void OnCollectiblePickedUp(CollectibleKind kind)
         {
-            var amount = Mathf.Max(0, Mathf.RoundToInt(value * Upgrades.GetValue(UpgradeParam.CollectibleValue)));
+            var baseCoins = _config.CollectibleCoins(kind);
+            var amount = Mathf.Max(0, Mathf.RoundToInt(baseCoins * Upgrades.GetValue(UpgradeParam.CollectibleValue)));
             if (amount <= 0) return;
             _wallet.AddCoins(amount).Forget();
-            Events.Publish(GameplayEventType.CoinCollected, new CoinCollected(amount));
+
+            if (kind == CollectibleKind.GiftBox)
+                Events.Publish(GameplayEventType.GiftBoxCollected, new GameSignal());
+            else
+                Events.Publish(GameplayEventType.CoinCollected, new CoinCollected(amount));
         }
 
         protected override void Subscribe()
@@ -106,7 +119,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             Character.Crashed += OnCrashed;
             Character.MomentumEnded += OnMomentumEnded;
             Character.SlowedDown += OnSlowedDown;
-            Character.CoinPickedUp += OnCoinPickedUp;
+            Character.CollectiblePickedUp += OnCollectiblePickedUp;
         }
 
         protected override void Unsubscribe()
@@ -116,7 +129,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             Character.Crashed -= OnCrashed;
             Character.MomentumEnded -= OnMomentumEnded;
             Character.SlowedDown -= OnSlowedDown;
-            Character.CoinPickedUp -= OnCoinPickedUp;
+            Character.CollectiblePickedUp -= OnCollectiblePickedUp;
         }
     }
 }

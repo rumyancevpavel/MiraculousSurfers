@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using MiraculousSurfers.Gameplay.Collectibles;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 
@@ -6,13 +8,27 @@ namespace MiraculousSurfers.Configuration
 {
     public class LocalGameConfigurationSystem : IGameConfigurationSystem
     {
+        private static readonly AudioClip[] NoClips = new AudioClip[0];
+
         private readonly Dictionary<UpgradeParam, GameConfiguration.UpgradeLadder> _ladders = new();
+        private readonly Dictionary<CollectibleKind, int> _collectibleCoins = new();
+        private readonly Dictionary<GameplayEventType, AudioClip[]> _audioClips = new();
 
         public LocalGameConfigurationSystem(GameConfiguration configuration)
         {
-            foreach (var ladder in configuration.Ladders)
+            foreach (var ladder in configuration.PowerupsLadders)
             {
                 _ladders[ladder.Param] = ladder;
+            }
+
+            foreach (var reward in configuration.CollectibleRewards)
+            {
+                _collectibleCoins[reward.Kind] = reward.Coins;
+            }
+
+            foreach (var entry in configuration.AudioEntries)
+            {
+                _audioClips[entry.Event] = entry.Clips;
             }
         }
 
@@ -50,6 +66,16 @@ namespace MiraculousSurfers.Configuration
         public Sprite Icon(UpgradeParam param)
         {
             return Resolve(param).Icon;
+        }
+
+        public int CollectibleCoins(CollectibleKind kind)
+        {
+            return _collectibleCoins.TryGetValue(kind, out var coins) ? coins : 0;
+        }
+
+        public AudioClip[] AudioClips(GameplayEventType eventType)
+        {
+            return _audioClips.TryGetValue(eventType, out var clips) ? clips : NoClips;
         }
 
         private GameConfiguration.UpgradeLadder Resolve(UpgradeParam param)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Configuration;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 using VContainer;
@@ -15,12 +16,14 @@ namespace MiraculousSurfers.Gameplay.UI
 
         private IGameConfigurationSystem _configuration;
         private IUpgradeService _upgrades;
+        private GameplayEventBus _events;
 
         [Inject]
-        public void Construct(IGameConfigurationSystem configuration, IUpgradeService upgrades)
+        public void Construct(IGameConfigurationSystem configuration, IUpgradeService upgrades, GameplayEventBus events)
         {
             _configuration = configuration;
             _upgrades = upgrades;
+            _events = events;
         }
 
         private void Awake()
@@ -59,6 +62,7 @@ namespace MiraculousSurfers.Gameplay.UI
 
         private void OnUpgradeRequested(UpgradeParam param)
         {
+            _events.Publish(GameplayEventType.UpgradeRequested, new GameSignal());
             HandleUpgrade(param).Forget();
         }
 

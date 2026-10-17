@@ -91,11 +91,11 @@ namespace MiraculousSurfers.Gameplay.Characters
         {
             if (!_running) return;
 
-            var coin = other.GetComponentInParent<Coin>();
-            if (coin != null)
+            var collectible = other.GetComponentInParent<Collectible>();
+            if (collectible != null)
             {
-                RaiseCoinPickedUp(coin.Value);
-                coin.Collect();
+                RaiseCollectiblePickedUp(collectible.Kind);
+                collectible.Collect();
                 return;
             }
 

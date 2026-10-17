@@ -50,6 +50,7 @@ namespace MiraculousSurfers.Gameplay.Score
 
             _save.SaveAsync(_data).Forget();
             PlaceIndicator(position);
+            _events.Publish(GameplayEventType.NewRecord, new GameSignal());
             _events.Publish(GameplayEventType.NewHighScore, new NewHighScore(distance, position));
             return true;
         }

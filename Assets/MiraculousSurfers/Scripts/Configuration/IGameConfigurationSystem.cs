@@ -1,3 +1,5 @@
+using MiraculousSurfers.Gameplay.Collectibles;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 
@@ -11,5 +13,7 @@ namespace MiraculousSurfers.Configuration
         bool HasNext(UpgradeParam param, int index);
         string DisplayName(UpgradeParam param);
         Sprite Icon(UpgradeParam param);
+        int CollectibleCoins(CollectibleKind kind);
+        AudioClip[] AudioClips(GameplayEventType eventType);
     }
 }
