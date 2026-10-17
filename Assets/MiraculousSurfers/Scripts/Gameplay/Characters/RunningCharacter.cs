@@ -1,3 +1,4 @@
+using MiraculousSurfers.Gameplay.Collectibles;
 using MiraculousSurfers.Gameplay.Obstacles;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -89,6 +90,14 @@ namespace MiraculousSurfers.Gameplay.Characters
         private void OnTriggerEnter(Collider other)
         {
             if (!_running) return;
+
+            var coin = other.GetComponentInParent<Coin>();
+            if (coin != null)
+            {
+                RaiseCoinPickedUp(coin.Value);
+                coin.Collect();
+                return;
+            }
 
             var obstacle = other.GetComponentInParent<Obstacle>();
             if (obstacle == null) return;

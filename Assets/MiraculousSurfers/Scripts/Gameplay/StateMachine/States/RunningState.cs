@@ -1,9 +1,11 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.UI;
+using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 using VContainer;
 
@@ -25,13 +27,18 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [SerializeField] private AnimationCurve _speedToBlend = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         
         private IScoreManager _scoreManager;
+        private IWalletService _wallet;
         private LaunchParams _launchParams;
         private bool _running;
 
         protected override GameplayStateType StateType => GameplayStateType.Running;
-        
+
         [Inject]
-        public void InjectScore(IScoreManager scoreManager) => _scoreManager = scoreManager;
+        public void InjectRunning(IScoreManager scoreManager, IWalletService wallet)
+        {
+            _scoreManager = scoreManager;
+            _wallet = wallet;
+        }
 
         public void Configure(LaunchParams launchParams)
         {
@@ -85,12 +92,21 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnSlowedDown() { }
 
+        private void OnCoinPickedUp(int value)
+        {
+            var amount = Mathf.Max(0, Mathf.RoundToInt(value * Upgrades.GetValue(UpgradeParam.CollectibleValue)));
+            if (amount <= 0) return;
+            _wallet.AddCoins(amount).Forget();
+            Events.Publish(GameplayEventType.CoinCollected, new CoinCollected(amount));
+        }
+
         protected override void Subscribe()
         {
             if (Character == null) return;
             Character.Crashed += OnCrashed;
             Character.MomentumEnded += OnMomentumEnded;
             Character.SlowedDown += OnSlowedDown;
+            Character.CoinPickedUp += OnCoinPickedUp;
         }
 
         protected override void Unsubscribe()
@@ -100,6 +116,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             Character.Crashed -= OnCrashed;
             Character.MomentumEnded -= OnMomentumEnded;
             Character.SlowedDown -= OnSlowedDown;
+            Character.CoinPickedUp -= OnCoinPickedUp;
         }
     }
 }

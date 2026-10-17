@@ -7,7 +7,7 @@ using VContainer;
 
 namespace MiraculousSurfers.Gameplay.UI
 {
-    public class PlayerWalletView : MonoBehaviour
+    public abstract class PlayerWalletView : MonoBehaviour
     {
         [SerializeField] private TMP_Text _balanceText;
         [SerializeField] private float _countDuration = 0.4f;

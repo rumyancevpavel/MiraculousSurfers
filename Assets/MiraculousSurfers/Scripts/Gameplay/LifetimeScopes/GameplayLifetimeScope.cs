@@ -18,6 +18,8 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
 
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterComponentInHierarchy<HomeScreenWalletView>();
+            builder.RegisterComponentInHierarchy<RunningScreenWalletView>();
             builder.Register<IDataSaveSystem<PlayerUpgradesData>, PlayerUpgradesSaveSystem>(Lifetime.Singleton);
             builder.RegisterInstance(_gameConfiguration);
             builder.Register<IGameConfigurationSystem, LocalGameConfigurationSystem>(Lifetime.Singleton);
@@ -27,7 +29,6 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterEntryPoint<UpgradeService>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();
-            builder.RegisterComponentInHierarchy<PlayerWalletView>();
             builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<ScoreManager>().As<IScoreManager>();
         }
