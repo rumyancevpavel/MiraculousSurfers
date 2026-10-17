@@ -60,9 +60,13 @@ namespace MiraculousSurfers.Configuration
         [SerializeField] private UpgradeLadder[] _powerupsLadders;
         [SerializeField] private CollectibleReward[] _collectibleRewards;
         [SerializeField] private AudioEntry[] _audioEntries;
+        [SerializeField] private float _recordRewardPerDistance = 1f;
+        [SerializeField] private float _tryEndedRewardPerDistance = 0.5f;
 
         public UpgradeLadder[] PowerupsLadders => _powerupsLadders;
         public CollectibleReward[] CollectibleRewards => _collectibleRewards;
         public AudioEntry[] AudioEntries => _audioEntries;
+        public float RecordRewardPerDistance => _recordRewardPerDistance;
+        public float TryEndedRewardPerDistance => _tryEndedRewardPerDistance;
     }
 }

@@ -94,3 +94,5 @@ MonoBehaviour:
   - _event: 10
     _clips:
     - {fileID: 8300000, guid: da3212a3b256043f2bd72d5e7363e3a9, type: 3}
+  _recordRewardPerDistance: 1
+  _tryEndedRewardPerDistance: 0.5

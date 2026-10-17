@@ -1,6 +1,6 @@
 using System;
 
-namespace MiraculousSurfers.Gameplay
+namespace MiraculousSurfers.Gameplay.Camera
 {
     [Serializable]
     public struct OrbitPreset

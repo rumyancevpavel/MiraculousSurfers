@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Gameplay.Events;
 using UnityEngine;
-using VContainer.Unity;
+using VContainer;
 
 namespace MiraculousSurfers.Gameplay.Audio
 {
-    public class AudioManager : IAudioManager, IStartable, IDisposable
+    public class AudioManager : MonoBehaviour, IAudioManager
     {
         private static readonly GameplayEventType[] SignalEvents =
         {
@@ -20,27 +20,24 @@ namespace MiraculousSurfers.Gameplay.Audio
             GameplayEventType.NewRecord,
         };
 
-        private readonly GameplayEventBus _events;
-        private readonly IGameConfigurationSystem _config;
+        [SerializeField] private AudioSource _sfxSource;
+        [SerializeField] private AudioSource _musicSource;
+
+        private GameplayEventBus _events;
+        private IGameConfigurationSystem _config;
         private readonly List<Action> _unsubscribers = new();
 
-        private AudioSource _source;
-        private AudioSource _musicSource;
-
-        public AudioManager(GameplayEventBus events, IGameConfigurationSystem config)
+        [Inject]
+        public void Construct(GameplayEventBus events, IGameConfigurationSystem config)
         {
             _events = events;
             _config = config;
         }
 
-        public void Start()
+        private void Start()
         {
-            var host = new GameObject("[AudioManager]");
-            _source = host.AddComponent<AudioSource>();
-            _source.playOnAwake = false;
-            _musicSource = host.AddComponent<AudioSource>();
-            _musicSource.playOnAwake = false;
-            _musicSource.loop = true;
+            if (_musicSource != null) _musicSource.loop = true;
+            if (_events == null) return;
 
             Action<CoinCollected> coinHandler = _ => Play(GameplayEventType.CoinCollected);
             _events.Subscribe(GameplayEventType.CoinCollected, coinHandler);
@@ -63,20 +60,26 @@ namespace MiraculousSurfers.Gameplay.Audio
             _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStopped, stopMusic));
         }
 
+        private void OnDestroy()
+        {
+            foreach (var unsubscribe in _unsubscribers) unsubscribe();
+            _unsubscribers.Clear();
+        }
+
         public void Play(GameplayEventType eventType)
         {
-            if (_source == null) return;
+            if (_sfxSource == null || _config == null) return;
 
             var clips = _config.AudioClips(eventType);
             if (clips == null || clips.Length == 0) return;
 
             var clip = clips.Length == 1 ? clips[0] : clips[UnityEngine.Random.Range(0, clips.Length)];
-            if (clip != null) _source.PlayOneShot(clip);
+            if (clip != null) _sfxSource.PlayOneShot(clip);
         }
 
         private void PlayMusic(GameplayEventType eventType)
         {
-            if (_musicSource == null) return;
+            if (_musicSource == null || _config == null) return;
 
             var clips = _config.AudioClips(eventType);
             if (clips == null || clips.Length == 0) return;
@@ -91,14 +94,6 @@ namespace MiraculousSurfers.Gameplay.Audio
         private void StopMusic()
         {
             if (_musicSource != null) _musicSource.Stop();
-        }
-
-        public void Dispose()
-        {
-            foreach (var unsubscribe in _unsubscribers) unsubscribe();
-            _unsubscribers.Clear();
-
-            if (_source != null) UnityEngine.Object.Destroy(_source.gameObject);
         }
     }
 }

@@ -13,9 +13,14 @@ namespace MiraculousSurfers.Configuration
         private readonly Dictionary<UpgradeParam, GameConfiguration.UpgradeLadder> _ladders = new();
         private readonly Dictionary<CollectibleKind, int> _collectibleCoins = new();
         private readonly Dictionary<GameplayEventType, AudioClip[]> _audioClips = new();
+        private readonly float _recordRewardPerDistance;
+        private readonly float _tryEndedRewardPerDistance;
 
         public LocalGameConfigurationSystem(GameConfiguration configuration)
         {
+            _recordRewardPerDistance = configuration.RecordRewardPerDistance;
+            _tryEndedRewardPerDistance = configuration.TryEndedRewardPerDistance;
+
             foreach (var ladder in configuration.PowerupsLadders)
             {
                 _ladders[ladder.Param] = ladder;
@@ -76,6 +81,16 @@ namespace MiraculousSurfers.Configuration
         public AudioClip[] AudioClips(GameplayEventType eventType)
         {
             return _audioClips.TryGetValue(eventType, out var clips) ? clips : NoClips;
+        }
+
+        public int RecordReward(float distance)
+        {
+            return Mathf.Max(0, Mathf.RoundToInt(distance * _recordRewardPerDistance));
+        }
+
+        public int TryEndedReward(float distance)
+        {
+            return Mathf.Max(0, Mathf.RoundToInt(distance * _tryEndedRewardPerDistance));
         }
 
         private GameConfiguration.UpgradeLadder Resolve(UpgradeParam param)

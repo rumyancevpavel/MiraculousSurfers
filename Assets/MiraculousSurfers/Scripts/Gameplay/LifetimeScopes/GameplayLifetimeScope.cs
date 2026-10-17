@@ -22,6 +22,8 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
         {
             builder.RegisterComponentInHierarchy<HomeScreenWalletView>();
             builder.RegisterComponentInHierarchy<RunningScreenWalletView>();
+            builder.RegisterComponentInHierarchy<NewRecordWalletView>();
+            builder.RegisterComponentInHierarchy<TryEndedWalletView>();
             builder.Register<IDataSaveSystem<PlayerUpgradesData>, PlayerUpgradesSaveSystem>(Lifetime.Singleton);
             builder.RegisterInstance(_gameConfiguration);
             builder.Register<IGameConfigurationSystem, LocalGameConfigurationSystem>(Lifetime.Singleton);
@@ -29,7 +31,7 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterEntryPoint<WalletService>(Lifetime.Singleton);
             builder.Register<GameplayEventBus>(Lifetime.Singleton);
             builder.RegisterEntryPoint<UpgradeService>(Lifetime.Singleton);
-            builder.RegisterEntryPoint<AudioManager>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<AudioManager>().As<IAudioManager>();
             builder.RegisterComponentInHierarchy<AnimationEventsHandler>();
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();

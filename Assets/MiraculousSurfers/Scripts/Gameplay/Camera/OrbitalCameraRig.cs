@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Camera;
 using Unity.Cinemachine;
 using UnityEngine;
 

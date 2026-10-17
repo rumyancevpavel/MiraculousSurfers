@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Camera;
 using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.UI;
 using MiraculousSurfers.Gameplay.Upgrades;

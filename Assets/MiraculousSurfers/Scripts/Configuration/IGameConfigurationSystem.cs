@@ -15,5 +15,7 @@ namespace MiraculousSurfers.Configuration
         Sprite Icon(UpgradeParam param);
         int CollectibleCoins(CollectibleKind kind);
         AudioClip[] AudioClips(GameplayEventType eventType);
+        int RecordReward(float distance);
+        int TryEndedReward(float distance);
     }
 }
