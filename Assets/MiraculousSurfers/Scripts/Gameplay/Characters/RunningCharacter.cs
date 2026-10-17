@@ -1,3 +1,4 @@
+using MiraculousSurfers.Gameplay.Obstacles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,6 +30,9 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         [Header("Grounding")]
         [SerializeField] private float _gravity = 20f;
+
+        [Header("Obstacles")]
+        [SerializeField] private float _slowSpeedFactor = 0.5f;
 
         private bool _running;
         private float _fuel;
@@ -87,6 +91,26 @@ namespace MiraculousSurfers.Gameplay.Characters
             _controller.enabled = false;
             transform.SetPositionAndRotation(_spawn.position - Vector3.forward * Mathf.Max(0f, distance), _spawn.rotation);
             _controller.enabled = true;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!_running) return;
+
+            var obstacle = other.GetComponentInParent<Obstacle>();
+            if (obstacle == null) return;
+
+            if (obstacle.Effect == ObstacleEffect.Crash)
+            {
+                _running = false;
+                _steerInput?.action.Disable();
+                RaiseCrashed();
+            }
+            else
+            {
+                _speedMultiplier *= _slowSpeedFactor;
+                RaiseSlowedDown();
+            }
         }
 
         private void Update()
