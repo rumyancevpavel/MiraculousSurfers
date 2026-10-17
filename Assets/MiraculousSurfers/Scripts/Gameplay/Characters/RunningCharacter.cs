@@ -50,13 +50,6 @@ namespace MiraculousSurfers.Gameplay.Characters
         {
             base.Launch(launchParams);
 
-            if (_spawn != null)
-            {
-                _controller.enabled = false;
-                transform.SetPositionAndRotation(_spawn.position, _spawn.rotation);
-                _controller.enabled = true;
-            }
-
             _speedMultiplier = launchParams.SpeedMultiplier;
             _steerMultiplier = launchParams.SteerMultiplier;
 

@@ -1378,6 +1378,7 @@ GameObject:
   - component: {fileID: 1099449462}
   - component: {fileID: 1099449460}
   - component: {fileID: 1099449463}
+  - component: {fileID: 1099449464}
   m_Layer: 0
   m_Name: GameplayStateMachine
   m_TagString: Untagged
@@ -1467,7 +1468,7 @@ MonoBehaviour:
   _runningScreenView: {fileID: 2077311708}
   _newRecordState: {fileID: 1099449463}
   _tryEndedState: {fileID: 1099449460}
-  _crashState: {fileID: 1099449460}
+  _crashState: {fileID: 1099449464}
   _enterStateTrigger: RunningState
   _runningSpeedParam: RunningState_RunningSpeed
   _speedToBlend:
@@ -1567,6 +1568,21 @@ MonoBehaviour:
   _celebrationSeconds: 4
   _waitingState: {fileID: 1099449457}
   _enterStateTrigger: NewRecordState
+--- !u!114 &1099449464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099449455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c88f7ccf04a40c2977eeffe43eabb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.StateMachine.States.CrashState
+  _deathAnimSeconds: 4
+  _waitingState: {fileID: 1099449457}
+  _enterStateTrigger: CrashState
 --- !u!1 &1191276473
 GameObject:
   m_ObjectHideFlags: 0

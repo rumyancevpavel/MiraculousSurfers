@@ -56,9 +56,10 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             }
         }
 
-        protected override async UniTask OnExitAsync(CancellationToken ct)
+        protected override UniTask OnExitAsync(CancellationToken ct)
         {
-            if (_runningScreenView != null) await _runningScreenView.HideAsync(ct);
+            if (_runningScreenView != null) _runningScreenView.HideAsync(ct).Forget();
+            return UniTask.CompletedTask;
         }
 
         private void Update()
