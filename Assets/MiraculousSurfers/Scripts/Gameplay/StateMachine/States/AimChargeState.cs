@@ -20,6 +20,9 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Input")]
         [SerializeField] private ChargeDragArea _chargeDragArea;
 
+        [Header("Sling")]
+        [SerializeField] private SlingView _sling;
+
         [Header("Animation")]
         [SerializeField] private string _enterStateTrigger = "AimChargeState";
         [SerializeField] private string _isChargingParam = "AimChargeState_IsCharging";
@@ -51,11 +54,13 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             }
             CharacterAnimator.SetTrigger(_enterStateTrigger);
             SetCharging(false);
+            if (_sling != null) _sling.SetCharge(0f);
         }
 
         protected override UniTask OnExitAsync(CancellationToken ct)
         {
             SetCharging(false);
+            if (_sling != null) _sling.SetCharge(0f);
             if (_aimScreenView != null) _aimScreenView.HideAsync(ct).Forget();
             return UniTask.CompletedTask;
         }
@@ -123,6 +128,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             var max = _chargeDragArea != null ? _chargeDragArea.MaxCharge : 0f;
             var normalized = max > 0f ? Mathf.Clamp01(charge / max) : 0f;
             Character.SetChargePull(normalized * _maxPullDistance);
+            if (_sling != null) _sling.SetCharge(normalized);
         }
 
         protected override void Subscribe()
