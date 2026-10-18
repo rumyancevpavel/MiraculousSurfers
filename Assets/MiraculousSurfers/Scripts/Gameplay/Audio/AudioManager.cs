@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using MiraculousSurfers.Configuration;
+using MiraculousSurfers.Core.Events;
 using MiraculousSurfers.Gameplay.Events;
 using UnityEngine;
 using VContainer;
@@ -45,36 +46,53 @@ namespace MiraculousSurfers.Gameplay.Audio
         {
             _countingSource.loop = true;
             StartTheme();
-
-            Action<CoinCollected> coinHandler = _ => Play(GameplayEventType.CoinCollected);
-            
-            _events.Subscribe(GameplayEventType.CoinCollected, coinHandler);
-            
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.CoinCollected, coinHandler));
+            _events.Subscribe<CoinCollected>(GameplayEventType.CoinCollected, OnCoinCollected);
+            _unsubscribers.Add(() => _events.Unsubscribe<CoinCollected>(GameplayEventType.CoinCollected, OnCoinCollected));
 
             foreach (var eventType in SignalEvents)
             {
                 var captured = eventType;
-                Action<GameSignal> handler = _ => Play(captured);
+                Action<GameSignal> handler = signal => Play(captured);
                 _events.Subscribe(captured, handler);
                 _unsubscribers.Add(() => _events.Unsubscribe(captured, handler));
             }
+            
+            _events.Subscribe<GameSignal>(GameplayEventType.RunMusicStarted, OnRunStarted);
+            _unsubscribers.Add(() => _events.Unsubscribe<GameSignal>(GameplayEventType.RunMusicStarted, OnRunStarted));
+            
+            _events.Subscribe<GameSignal>(GameplayEventType.RunMusicStopped, OnRunStopped);
+            _unsubscribers.Add(() => _events.Unsubscribe<GameSignal>(GameplayEventType.RunMusicStopped, OnRunStopped));
+            
+            _events.Subscribe<GameSignal>(GameplayEventType.CoinsCountingStarted, OnStartCounting);
+            _unsubscribers.Add(() => _events.Unsubscribe<GameSignal>(GameplayEventType.CoinsCountingStarted, OnStartCounting));
+            
+            _events.Subscribe<GameSignal>(GameplayEventType.CoinsCountingStopped, OnStopCounting);
+            _unsubscribers.Add(() => _events.Unsubscribe<GameSignal>(GameplayEventType.CoinsCountingStopped, OnStopCounting));
+        }
 
-            Action<GameSignal> runStarted = _ => _musicTargetVolume = _musicHighVolume;
-            _events.Subscribe(GameplayEventType.RunMusicStarted, runStarted);
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStarted, runStarted));
+        private void OnCoinCollected(CoinCollected coinCollected)
+        {
+            Play(GameplayEventType.CoinCollected);
+        }
 
-            Action<GameSignal> runStopped = _ => _musicTargetVolume = _musicLowVolume;
-            _events.Subscribe(GameplayEventType.RunMusicStopped, runStopped);
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStopped, runStopped));
+        private void OnRunStarted(GameSignal signal)
+        {
+            _musicTargetVolume = _musicHighVolume;
+        }
+        
+        private void OnRunStopped(GameSignal signal)
+        {
+            _musicTargetVolume = _musicLowVolume;
+        }
 
-            Action<GameSignal> startCounting = _ => PlayLooping(_countingSource, GameplayEventType.CoinsCountingStarted);
-            _events.Subscribe(GameplayEventType.CoinsCountingStarted, startCounting);
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.CoinsCountingStarted, startCounting));
+        private void OnStartCounting(GameSignal signal)
+        {
+            PlayLooping(_countingSource, GameplayEventType.CoinsCountingStarted);
+        }
 
-            Action<GameSignal> stopCounting = _ => _countingSource.Stop();
-            _events.Subscribe(GameplayEventType.CoinsCountingStopped, stopCounting);
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.CoinsCountingStopped, stopCounting));
+        private void OnStopCounting(GameSignal signal)
+        {
+            _countingSource.Stop();
         }
 
         private void OnDestroy()

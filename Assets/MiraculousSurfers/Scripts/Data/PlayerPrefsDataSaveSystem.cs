@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Core;
 using UnityEngine;
 
@@ -6,34 +7,40 @@ namespace MiraculousSurfers.Data
 {
     public abstract class PlayerPrefsDataSaveSystem<TData> : DataSaveSystem<TData>
     {
-        protected override IResult<string> ReadRaw(string key)
+        protected override UniTask<IResult<string>> LoadInternalAsync(string key)
         {
+            IResult<string> result = default;
             try
             {
                 if (!PlayerPrefs.HasKey(key))
                 {
-                    return Result.Ok<string>(null);
+                    result = Result.Ok<string>(null);
+                    return UniTask.FromResult(result);
                 }
 
-                return Result.Ok(PlayerPrefs.GetString(key));
+                result = Result.Ok(PlayerPrefs.GetString(key));
+                return UniTask.FromResult(result);
             }
             catch (Exception exception)
             {
-                return Result.Fail<string>(exception);
+                result = Result.Fail<string>(exception);
+                return UniTask.FromResult(result);
             }
         }
 
-        protected override IResult<bool> WriteRaw(string key, string json)
+        protected override UniTask<IResult<bool>> SaveInternalAsync(string key, string json)
         {
             try
             {
                 PlayerPrefs.SetString(key, json);
                 PlayerPrefs.Save();
-                return Result.Ok(true);
+                var result = Result.Ok(true);
+                return UniTask.FromResult(result);
             }
             catch (Exception exception)
             {
-                return Result.Fail<bool>(exception);
+                var result = Result.Fail<bool>(exception);
+                return UniTask.FromResult(result);
             }
         }
     }

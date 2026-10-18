@@ -9,37 +9,33 @@ namespace MiraculousSurfers.Core.Events
         private sealed class Subscription
         {
             public Type PayloadType;
-            public readonly List<Delegate> Handlers = new List<Delegate>();
+            public readonly List<Delegate> Handlers = new ();
         }
 
-        private readonly Dictionary<T, Subscription> _subscriptions = new Dictionary<T, Subscription>();
-        private readonly Stack<List<Delegate>> _bufferPool = new Stack<List<Delegate>>();
+        private readonly Dictionary<T, Subscription> _subscriptions = new ();
+        private readonly Stack<List<Delegate>> _bufferPool = new ();
 
         public void Subscribe<TEvent>(T eventType, Action<TEvent> handler) where TEvent : IEvent
         {
-            if (handler == null)
-                throw new ArgumentNullException(nameof(handler));
-
-            var subscription = Bind(eventType, typeof(TEvent));
+            var subscription = GetOrCreateSubscription(eventType, typeof(TEvent));
             if (!subscription.Handlers.Contains(handler))
                 subscription.Handlers.Add(handler);
         }
 
         public void Unsubscribe<TEvent>(T eventType, Action<TEvent> handler) where TEvent : IEvent
         {
-            if (handler == null)
-                return;
             if (_subscriptions.TryGetValue(eventType, out var subscription))
                 subscription.Handlers.Remove(handler);
         }
 
         public void Publish<TEvent>(T eventType, TEvent eventData) where TEvent : IEvent
         {
-            var subscription = Bind(eventType, typeof(TEvent));
+            var subscription = GetOrCreateSubscription(eventType, typeof(TEvent));
+            
             if (subscription.Handlers.Count == 0)
                 return;
 
-            var buffer = RentBuffer();
+            var buffer = GetOrCreateHandlersBuffer();
             buffer.AddRange(subscription.Handlers);
             for (var i = 0; i < buffer.Count; i++)
             {
@@ -65,7 +61,7 @@ namespace MiraculousSurfers.Core.Events
             _subscriptions.Clear();
         }
 
-        private Subscription Bind(T eventType, Type payloadType)
+        private Subscription GetOrCreateSubscription(T eventType, Type payloadType)
         {
             if (!_subscriptions.TryGetValue(eventType, out var subscription))
             {
@@ -84,7 +80,7 @@ namespace MiraculousSurfers.Core.Events
             return subscription;
         }
 
-        private List<Delegate> RentBuffer()
+        private List<Delegate> GetOrCreateHandlersBuffer()
         {
             return _bufferPool.Count > 0 ? _bufferPool.Pop() : new List<Delegate>();
         }

@@ -99,6 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fdbaad1320d54c8983e0d5ed8b49a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.Collectibles.GiftBox
+  _animator: {fileID: 1082163748604343744}
+  _minAnimationSpeed: 0.7
+  _maxAnimationSpeed: 1
 --- !u!1 &5926375297268120585
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +195,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a20a0bf5e20e364a811feb708734a39, type: 3}
+--- !u!95 &1082163748604343744 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 2a20a0bf5e20e364a811feb708734a39, type: 3}
+  m_PrefabInstance: {fileID: 1082163748611621024}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1082163748611496480 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 2a20a0bf5e20e364a811feb708734a39, type: 3}

@@ -246,6 +246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a69c4d124f9142fa8a082a0b8ed503a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.Collectibles.Coin
-  _animationSpeedParam: AnimationSpeed
+  _animator: {fileID: 5087503666932168845}
   _minAnimationSpeed: 0.7
   _maxAnimationSpeed: 1
