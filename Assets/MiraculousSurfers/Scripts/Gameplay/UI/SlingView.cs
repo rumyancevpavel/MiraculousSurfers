@@ -6,7 +6,7 @@ namespace MiraculousSurfers.Gameplay.UI
     public class SlingView : MonoBehaviour
     {
         [SerializeField] private LineRenderer _lineRenderer;
-        [SerializeField] private float _maxPull = 2f;
+        [SerializeField] private float _maxPull = 4f;
         [SerializeField] private Vector3 _pullDirection = Vector3.back;
         [SerializeField] private AnimationCurve _pullProfile = new (new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
 

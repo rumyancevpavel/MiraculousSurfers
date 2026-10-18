@@ -6045,7 +6045,7 @@ MonoBehaviour:
   m_text: 1000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8175,9 +8175,9 @@ MonoBehaviour:
   _canvasGroup: {fileID: 2077311703}
   _elements:
   - {fileID: 1550413009}
-  _fadeDuration: 0.3
+  _fadeDuration: 0.2
   _distanceText: {fileID: 1550413011}
-  _format: '{0:0}'
+  _format: '{0:0} m'
 --- !u!1 &2087689163
 GameObject:
   m_ObjectHideFlags: 0
@@ -8222,7 +8222,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b7393f1738eaf49229881c400992d81a, type: 2}
+  - {fileID: 2100000, guid: eca07ad7eaf974ccd96f86da9a0354c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8247,12 +8247,37 @@ LineRenderer:
   m_MaskInteraction: 0
   m_Positions:
   - {x: -4.0191317, y: 2.8809967, z: -0.6156933}
-  - {x: -2.8647776, y: 2.8809967, z: -0.6156933}
-  - {x: -1.5912063, y: 2.8809967, z: -0.6156933}
-  - {x: -0.66945314, y: 2.8809967, z: -0.6156933}
-  - {x: 0.43325597, y: 2.8809967, z: -0.6156933}
-  - {x: 1.5097446, y: 2.8809967, z: -0.6156933}
-  - {x: 2.7034714, y: 2.8809967, z: -0.6156933}
+  - {x: -3.7734108, y: 2.8809967, z: -0.6156933}
+  - {x: -3.52769, y: 2.8809967, z: -0.6156933}
+  - {x: -3.2819693, y: 2.8809967, z: -0.6156933}
+  - {x: -3.0362482, y: 2.8809967, z: -0.6156933}
+  - {x: -2.7905276, y: 2.8809967, z: -0.6156933}
+  - {x: -2.5448067, y: 2.8809967, z: -0.6156933}
+  - {x: -2.2990859, y: 2.8809967, z: -0.6156933}
+  - {x: -2.053365, y: 2.8809967, z: -0.6156933}
+  - {x: -1.8076441, y: 2.8809967, z: -0.6156933}
+  - {x: -1.5619233, y: 2.8809967, z: -0.6156933}
+  - {x: -1.3162024, y: 2.8809967, z: -0.6156933}
+  - {x: -1.0704818, y: 2.8809967, z: -0.6156933}
+  - {x: -0.8247609, y: 2.8809967, z: -0.6156933}
+  - {x: -0.57904005, y: 2.8809967, z: -0.6156933}
+  - {x: -0.33331925, y: 2.8809967, z: -0.6156933}
+  - {x: -0.08759843, y: 2.8809967, z: -0.6156933}
+  - {x: 0.15812238, y: 2.8809967, z: -0.6156933}
+  - {x: 0.40384325, y: 2.8809967, z: -0.6156933}
+  - {x: 0.64956415, y: 2.8809967, z: -0.6156933}
+  - {x: 0.895285, y: 2.8809967, z: -0.6156933}
+  - {x: 1.1410059, y: 2.8809967, z: -0.6156933}
+  - {x: 1.3867269, y: 2.8809967, z: -0.6156933}
+  - {x: 1.6324477, y: 2.8809967, z: -0.6156933}
+  - {x: 1.8781682, y: 2.8809967, z: -0.6156933}
+  - {x: 2.123889, y: 2.8809967, z: -0.6156933}
+  - {x: 2.36961, y: 2.8809967, z: -0.6156933}
+  - {x: 2.615331, y: 2.8809967, z: -0.6156933}
+  - {x: 2.8610518, y: 2.8809967, z: -0.6156933}
+  - {x: 3.1067727, y: 2.8809967, z: -0.6156933}
+  - {x: 3.3524935, y: 2.8809967, z: -0.6156933}
+  - {x: 3.5982146, y: 2.8809967, z: -0.6156933}
   - {x: 3.8439355, y: 2.8809967, z: -0.6156933}
   m_Parameters:
     serializedVersion: 3
@@ -8261,8 +8286,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.0037879944
-        value: 0.5267849
+        time: 0.021331787
+        value: 0.29727745
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -8302,11 +8327,11 @@ LineRenderer:
       m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
+    numCornerVertices: 2
+    numCapVertices: 3
     alignment: 1
-    textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureMode: 3
+    textureScale: {x: 0.2, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1

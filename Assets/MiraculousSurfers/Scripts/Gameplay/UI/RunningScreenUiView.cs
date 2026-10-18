@@ -6,7 +6,7 @@ namespace MiraculousSurfers.Gameplay.UI
     public class RunningScreenUiView : UiScreenView
     {
         [SerializeField] private TMP_Text _distanceText;
-        [SerializeField] private string _format = "{0:0}";
+        [SerializeField] private string _format = "{0:0} m";
 
         public void SetDistance(float distance)
         {
