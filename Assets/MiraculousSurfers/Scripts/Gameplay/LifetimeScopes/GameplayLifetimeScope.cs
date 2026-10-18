@@ -1,3 +1,4 @@
+using MiraculousSurfers.App;
 using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Data;
 using MiraculousSurfers.Economy;
@@ -20,6 +21,8 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
 
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterEntryPoint<TargetFrameRateInitializer>();
+
             builder.RegisterComponentInHierarchy<HomeScreenWalletView>();
             builder.RegisterComponentInHierarchy<RunningScreenWalletView>();
             builder.RegisterComponentInHierarchy<NewRecordWalletView>();

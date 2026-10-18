@@ -4573,8 +4573,6 @@ MonoBehaviour:
     Vertical: 15
     Radius: 1
   _homeScreenView: {fileID: 1592535336}
-  _celebrateTrigger: WaitState_UpgradePurchased
-  _enterStateTrigger: WaitState
   _aimState: {fileID: 1099449462}
 --- !u!114 &1099449458
 MonoBehaviour:
@@ -4622,8 +4620,6 @@ MonoBehaviour:
   _rewardsWidget: {fileID: 869908434}
   _grantDelaySeconds: 0.75
   _waitingState: {fileID: 1099449457}
-  _enterStateTrigger: TryEndedState
-  _celebrationType: TryEndedState_CelebrationType
 --- !u!114 &1099449461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4640,8 +4636,6 @@ MonoBehaviour:
   _newRecordState: {fileID: 1099449463}
   _tryEndedState: {fileID: 1099449460}
   _crashState: {fileID: 1099449464}
-  _enterStateTrigger: RunningState
-  _runningSpeedParam: RunningState_RunningSpeed
   _speedToBlend:
     serializedVersion: 2
     m_Curve:
@@ -4720,8 +4714,6 @@ MonoBehaviour:
   _aimScreenView: {fileID: 1425870866}
   _chargeDragArea: {fileID: 87781453}
   _sling: {fileID: 2087689166}
-  _enterStateTrigger: AimChargeState
-  _isChargingParam: AimChargeState_IsCharging
   _minChargeToFire: 25
   _maxPullDistance: 3
   _waitingState: {fileID: 1099449457}
@@ -4742,7 +4734,6 @@ MonoBehaviour:
   _rewardsWidget: {fileID: 203809460}
   _grantDelaySeconds: 0.75
   _waitingState: {fileID: 1099449457}
-  _enterStateTrigger: NewRecordState
 --- !u!114 &1099449464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4757,7 +4748,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiraculousSurfers.Gameplay.StateMachine.States.CrashState
   _deathAnimSeconds: 4
   _waitingState: {fileID: 1099449457}
-  _enterStateTrigger: CrashState
 --- !u!4 &1151834947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1828685101026885018, guid: 73a5715f243c34059b894b7abf692d5e, type: 3}
@@ -6998,6 +6988,30 @@ PrefabInstance:
     - target: {fileID: 3629009679521465797, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
       propertyPath: m_Name
       value: Truck
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400399602880377105, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
+      propertyPath: m_Size.x
+      value: 35.615513
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400399602880377105, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
+      propertyPath: m_Size.y
+      value: 10.869086
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400399602880377105, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
+      propertyPath: m_Size.z
+      value: 8.046631
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400399602880377105, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
+      propertyPath: m_Center.x
+      value: -13.928793
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400399602880377105, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
+      propertyPath: m_Center.y
+      value: 5.3108153
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400399602880377105, guid: 96f4a6b9a715d4e649ab325e0c763864, type: 3}
+      propertyPath: m_Center.z
+      value: 0.19805908
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
