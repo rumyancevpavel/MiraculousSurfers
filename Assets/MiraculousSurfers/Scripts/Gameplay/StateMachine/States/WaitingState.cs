@@ -14,19 +14,18 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [SerializeField] private OrbitPreset _waitingPreset;
         [SerializeField] private HomeScreenUiView _homeScreenView;
 
-        [Header("Animation")]
-        [SerializeField] private string _celebrateTrigger = "WaitState_UpgradePurchased";
-        [SerializeField] private string _enterStateTrigger = "WaitState";
-        
         [Header("Flow")]
         [SerializeField] private GameplayState _aimState;
+
+        private static readonly int EnterStateTrigger = Animator.StringToHash("WaitState");
+        private static readonly int CelebrateTrigger = Animator.StringToHash("WaitState_UpgradePurchased");
 
         protected override GameplayStateType StateType => GameplayStateType.Wait;
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
             if (Character != null) Character.ResetToSpawn();
-            CharacterAnimator.SetTrigger(_enterStateTrigger);
+            CharacterAnimator.SetTrigger(EnterStateTrigger);
 
             _cameraRig.Activate();
             await _cameraRig.AnimateToAsync(_waitingPreset, ct: ct);
@@ -46,7 +45,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnUpgradePurchased(UpgradeParam param)
         {
-            if (CharacterAnimator != null) CharacterAnimator.SetTrigger(_celebrateTrigger);
+            CharacterAnimator.SetTrigger(CelebrateTrigger);
         }
 
         protected override void Subscribe()

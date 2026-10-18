@@ -23,8 +23,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
 
-        [Header("Animation")]
-        [SerializeField] private string _enterStateTrigger = "NewRecordState";
+        private static readonly int EnterStateTrigger = Animator.StringToHash("NewRecordState");
 
         private IScoreManager _scoreManager;
         private IWalletService _wallet;
@@ -42,7 +41,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
-            CharacterAnimator.SetTrigger(_enterStateTrigger);
+            CharacterAnimator.SetTrigger(EnterStateTrigger);
 
             var reward = _config.RecordReward(_scoreManager.Best);
             _rewardsWidget.SetReward(reward);

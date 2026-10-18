@@ -24,10 +24,11 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [SerializeField] private GameplayState _crashState;
 
         [Header("Animation")]
-        [SerializeField] private string _enterStateTrigger = "RunningState";
-        [SerializeField] private string _runningSpeedParam = "RunningState_RunningSpeed";
         [SerializeField] private AnimationCurve _speedToBlend = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        
+
+        private static readonly int EnterStateTrigger = Animator.StringToHash("RunningState");
+        private static readonly int RunningSpeed = Animator.StringToHash("RunningState_RunningSpeed");
+
         private IScoreManager _scoreManager;
         private IWalletService _wallet;
         private IGameConfigurationSystem _config;
@@ -51,7 +52,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         public void BeginRunningAnimation()
         {
-            if (CharacterAnimator != null) CharacterAnimator.SetTrigger(_enterStateTrigger);
+            CharacterAnimator.SetTrigger(EnterStateTrigger);
         }
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
@@ -80,7 +81,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         {
             if (!_running || Character == null) return;
             if (_runningScreenView != null) _runningScreenView.SetDistance(Character.TraveledDistance);
-            if (CharacterAnimator != null) CharacterAnimator.SetFloat(_runningSpeedParam, _speedToBlend.Evaluate(Character.SpeedFraction));
+            CharacterAnimator.SetFloat(RunningSpeed, _speedToBlend.Evaluate(Character.SpeedFraction));
         }
 
         private void OnCrashed()

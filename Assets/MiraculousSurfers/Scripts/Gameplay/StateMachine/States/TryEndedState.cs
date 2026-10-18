@@ -22,9 +22,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
 
-        [Header("Animation")]
-        [SerializeField] private string _enterStateTrigger = "TryEndedState";
-        [SerializeField] private string _celebrationType = "TryEndedState_CelebrationType";
+        private static readonly int EnterStateTrigger = Animator.StringToHash("TryEndedState");
+        private static readonly int CelebrationType = Animator.StringToHash("TryEndedState_CelebrationType");
 
         private IWalletService _wallet;
         private IGameConfigurationSystem _config;
@@ -41,8 +40,8 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
             var celebrationType = UnityEngine.Random.Range(0, 1) > 0.5 ? 1 : 2;
-            CharacterAnimator.SetTrigger(_enterStateTrigger);
-            CharacterAnimator.SetInteger(_celebrationType, celebrationType);
+            CharacterAnimator.SetTrigger(EnterStateTrigger);
+            CharacterAnimator.SetInteger(CelebrationType, celebrationType);
 
             var reward = _config.TryEndedReward(Character.TraveledDistance);
             _rewardsWidget.SetReward(reward);

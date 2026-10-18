@@ -23,10 +23,6 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Sling")]
         [SerializeField] private SlingView _sling;
 
-        [Header("Animation")]
-        [SerializeField] private string _enterStateTrigger = "AimChargeState";
-        [SerializeField] private string _isChargingParam = "AimChargeState_IsCharging";
-        
         [Header("Tuning")]
         [SerializeField] private float _minChargeToFire = 25f;
         [SerializeField] private float _maxPullDistance = 3f;
@@ -34,6 +30,9 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
         [SerializeField] private RunningState _runningState;
+
+        private static readonly int EnterStateTrigger = Animator.StringToHash("AimChargeState");
+        private static readonly int IsCharging = Animator.StringToHash("AimChargeState_IsCharging");
 
         private float _charge;
         private Vector3 _direction = Vector3.forward;
@@ -52,7 +51,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
                 _aimScreenView.SetChargingVisual(false);
                 await _aimScreenView.ShowAsync(ct);
             }
-            CharacterAnimator.SetTrigger(_enterStateTrigger);
+            CharacterAnimator.SetTrigger(EnterStateTrigger);
             SetCharging(false);
             if (_sling != null) _sling.SetCharge(0f);
         }
@@ -119,7 +118,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void SetCharging(bool value)
         {
-            if (CharacterAnimator != null) CharacterAnimator.SetBool(_isChargingParam, value);
+            CharacterAnimator.SetBool(IsCharging, value);
         }
 
         private void ApplyPull(float charge)

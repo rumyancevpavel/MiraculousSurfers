@@ -13,14 +13,13 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         [Header("Flow")]
         [SerializeField] private GameplayState _waitingState;
 
-        [Header("Animation")]
-        [SerializeField] private string _enterStateTrigger = "CrashState";
-        
+        private static readonly int EnterStateTrigger = Animator.StringToHash("CrashState");
+
         protected override GameplayStateType StateType => GameplayStateType.Crashed;
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
-            if (CharacterAnimator != null) CharacterAnimator.SetTrigger(_enterStateTrigger);
+            CharacterAnimator.SetTrigger(EnterStateTrigger);
 
             await UniTask.Delay(TimeSpan.FromSeconds(_deathAnimSeconds), cancellationToken: ct)
                          .SuppressCancellationThrow();
