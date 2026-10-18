@@ -127,8 +127,9 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             if (Character == null) return;
             var max = _chargeDragArea != null ? _chargeDragArea.MaxCharge : 0f;
             var normalized = max > 0f ? Mathf.Clamp01(charge / max) : 0f;
-            Character.SetChargePull(normalized * _maxPullDistance);
-            if (_sling != null) _sling.SetCharge(normalized);
+            var powerScale = Upgrades != null ? Upgrades.GetValue(UpgradeParam.LaunchPower) : 1f;
+            Character.SetChargePull(normalized * _maxPullDistance * powerScale);
+            if (_sling != null) _sling.SetCharge(normalized, powerScale);
         }
 
         protected override void Subscribe()

@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using MiraculousSurfers.Configuration;
 using MiraculousSurfers.Economy;
+using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
 using VContainer;
@@ -39,27 +40,26 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
-            if (CharacterAnimator != null)
-            {
-                var celebrationType = UnityEngine.Random.Range(0, 1) > 0.5 ? 1 : 2;
-                CharacterAnimator.SetTrigger(_enterStateTrigger);
-                CharacterAnimator.SetInteger(_celebrationType, celebrationType);
-            }
+            var celebrationType = UnityEngine.Random.Range(0, 1) > 0.5 ? 1 : 2;
+            CharacterAnimator.SetTrigger(_enterStateTrigger);
+            CharacterAnimator.SetInteger(_celebrationType, celebrationType);
 
-            var reward = _config.TryEndedReward(Character != null ? Character.TraveledDistance : 0f);
-            if (_rewardsWidget != null) _rewardsWidget.SetReward(reward);
+            var reward = _config.TryEndedReward(Character.TraveledDistance);
+            _rewardsWidget.SetReward(reward);
 
-            if (_screenView != null) await _screenView.ShowAsync(ct);
+            await _screenView.ShowAsync(ct);
             if (ct.IsCancellationRequested) return;
 
             await UniTask.Delay(TimeSpan.FromSeconds(_grantDelaySeconds), cancellationToken: ct).SuppressCancellationThrow();
             if (ct.IsCancellationRequested) return;
 
+            Events.Publish(GameplayEventType.CoinsCountingStarted, new GameSignal());
             _wallet.AddCoins(reward).Forget();
-            if (_rewardsWidget != null) await _rewardsWidget.CountToZeroAsync(reward, ct);
+            await _rewardsWidget.CountToZeroAsync(reward, ct);
+            Events.Publish(GameplayEventType.CoinsCountingStopped, new GameSignal());
             if (ct.IsCancellationRequested) return;
 
-            if (_rewardsWidget != null) await _rewardsWidget.WaitForContinueAsync(ct);
+            await _rewardsWidget.WaitForContinueAsync(ct);
             if (ct.IsCancellationRequested) return;
 
             Machine.GoTo(_waitingState).Forget();
@@ -67,7 +67,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         protected override async UniTask OnExitAsync(CancellationToken ct)
         {
-            if (_screenView != null) await _screenView.HideAsync(ct);
+            await _screenView.HideAsync(ct);
         }
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   _powerupsLadders:
   - _param: 0
     _displayName: Power
-    _icon: {fileID: 21300000, guid: 18254808782e34f50ada529d553df760, type: 3}
+    _icon: {fileID: 21300000, guid: d2696b6ce11be46e281f94ace9765b77, type: 3}
     _baseValue: 1
     _steps:
     - _value: 1.2
@@ -26,7 +26,7 @@ MonoBehaviour:
       _price: 300
   - _param: 1
     _displayName: Speed
-    _icon: {fileID: 21300000, guid: ff3350037521e4a10861f3de38e2eab8, type: 3}
+    _icon: {fileID: 21300000, guid: 9d6a812a58b27411a8eb1ed6d4fa776e, type: 3}
     _baseValue: 1
     _steps:
     - _value: 1.2
@@ -37,7 +37,7 @@ MonoBehaviour:
       _price: 300
   - _param: 2
     _displayName: Steering
-    _icon: {fileID: 21300000, guid: 4a2be3350a4004092a481d586b9aa7b9, type: 3}
+    _icon: {fileID: 21300000, guid: 78e26fe75e80c46b1aba8baa0be61f05, type: 3}
     _baseValue: 1
     _steps:
     - _value: 1.2
@@ -94,5 +94,10 @@ MonoBehaviour:
   - _event: 10
     _clips:
     - {fileID: 8300000, guid: da3212a3b256043f2bd72d5e7363e3a9, type: 3}
+  - _event: 12
+    _clips:
+    - {fileID: 8300000, guid: 94c01917b3a671b42a552c4dc3717ccd, type: 3}
+    - {fileID: 8300000, guid: 9a91dfc4225f1e8448d027b49e7340d2, type: 3}
+    - {fileID: 8300000, guid: 94c1dedf4d64fa0438bfe755ee2873ed, type: 3}
   _recordRewardPerDistance: 1
   _tryEndedRewardPerDistance: 0.5

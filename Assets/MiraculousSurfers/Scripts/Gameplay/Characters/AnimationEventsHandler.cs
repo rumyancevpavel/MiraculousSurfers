@@ -13,7 +13,7 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         public void StepOnGround()
         {
-            _events?.Publish(GameplayEventType.SingleStep, new GameSignal());
+            _events.Publish(GameplayEventType.SingleStep, new GameSignal());
         }
     }
 }

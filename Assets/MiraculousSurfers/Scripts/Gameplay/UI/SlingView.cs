@@ -14,32 +14,24 @@ namespace MiraculousSurfers.Gameplay.UI
 
         private void Awake()
         {
-            if (_lineRenderer == null) _lineRenderer = GetComponent<LineRenderer>();
-            CaptureRest();
+            _restPositions = new Vector3[_lineRenderer.positionCount];
+            _lineRenderer.GetPositions(_restPositions);
         }
 
-        public void SetCharge(float normalized)
-        {
-            if (_lineRenderer == null) return;
-            if (_restPositions == null || _restPositions.Length != _lineRenderer.positionCount) CaptureRest();
+        public void SetCharge(float normalized) => SetCharge(normalized, 1f);
 
+        public void SetCharge(float normalized, float pullScale)
+        {
             normalized = Mathf.Clamp01(normalized);
-            var direction = _pullDirection.sqrMagnitude > 0.0001f ? _pullDirection.normalized : Vector3.back;
+            var direction = _pullDirection.normalized;
             var count = _restPositions.Length;
 
             for (var i = 0; i < count; i++)
             {
                 var t = count > 1 ? (float)i / (count - 1) : 0f;
                 var weight = _pullProfile.Evaluate(t);
-                _lineRenderer.SetPosition(i, _restPositions[i] + direction * (_maxPull * normalized * weight));
+                _lineRenderer.SetPosition(i, _restPositions[i] + direction * (_maxPull * pullScale * normalized * weight));
             }
-        }
-
-        private void CaptureRest()
-        {
-            var count = _lineRenderer.positionCount;
-            _restPositions = new Vector3[count];
-            _lineRenderer.GetPositions(_restPositions);
         }
     }
 }

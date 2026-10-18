@@ -4,7 +4,7 @@ namespace MiraculousSurfers.Gameplay.Collectibles
 {
     public enum CollectibleKind
     {
-        MacaroonCoin,
+        Coin,
         GiftBox
     }
 

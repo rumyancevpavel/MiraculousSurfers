@@ -14,5 +14,7 @@ namespace MiraculousSurfers.Gameplay.Events
         NewRecord = 9,
         RunMusicStarted = 10,
         RunMusicStopped = 11,
+        CoinsCountingStarted = 12,
+        CoinsCountingStopped = 13,
     }
 }

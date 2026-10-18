@@ -28,12 +28,12 @@ namespace MiraculousSurfers.Gameplay.UI
 
         private void OnEnable()
         {
-            if (_upgradeButton != null) _upgradeButton.onClick.AddListener(RaiseUpgradeRequested);
+            _upgradeButton.onClick.AddListener(RaiseUpgradeRequested);
         }
 
         private void OnDisable()
         {
-            if (_upgradeButton != null) _upgradeButton.onClick.RemoveListener(RaiseUpgradeRequested);
+            _upgradeButton.onClick.RemoveListener(RaiseUpgradeRequested);
             CancelFill();
         }
 
@@ -41,21 +41,19 @@ namespace MiraculousSurfers.Gameplay.UI
 
         public void Bind(IGameConfigurationSystem configuration)
         {
-            if (_nameText != null) _nameText.text = configuration.DisplayName(_param);
-            if (_iconImage != null) _iconImage.sprite = configuration.Icon(_param);
+            _nameText.text = configuration.DisplayName(_param);
+            _iconImage.sprite = configuration.Icon(_param);
         }
 
         public void SetProgress(int current, int max, int nextCost)
         {
-            if (_progressText != null) _progressText.text = $"{current}/{max}";
-            if (_upgradePriceText != null) _upgradePriceText.text = nextCost > 0 ? nextCost.ToString() : "MAX";
+            _progressText.text = $"{current}/{max}";
+            _upgradePriceText.text = nextCost > 0 ? nextCost.ToString() : "MAX";
             AnimateSlider(current, max);
         }
 
         private void AnimateSlider(int current, int max)
         {
-            if (_progressSlider == null) return;
-
             _progressSlider.minValue = 0f;
             _progressSlider.maxValue = max;
 
@@ -68,7 +66,7 @@ namespace MiraculousSurfers.Gameplay.UI
         {
             if (_fillDuration <= 0f || Mathf.Approximately(from, to) || !isActiveAndEnabled)
             {
-                if (_progressSlider != null) _progressSlider.value = to;
+                SetSliderValue(to);
                 return;
             }
 
@@ -77,11 +75,19 @@ namespace MiraculousSurfers.Gameplay.UI
             {
                 elapsed += Time.unscaledDeltaTime;
                 var t = Mathf.Clamp01(elapsed / _fillDuration);
-                if (_progressSlider != null) _progressSlider.value = Mathf.Lerp(from, to, t);
+                SetSliderValue(Mathf.Lerp(from, to, t));
                 if (await UniTask.Yield(PlayerLoopTiming.Update, ct).SuppressCancellationThrow()) return;
             }
 
-            if (_progressSlider != null) _progressSlider.value = to;
+            SetSliderValue(to);
+        }
+
+        private void SetSliderValue(float value)
+        {
+            _progressSlider.value = value;
+            var fill = _progressSlider.fillRect.gameObject;
+            var visible = value > 0f;
+            if (fill.activeSelf != visible) fill.SetActive(visible);
         }
 
         private void RaiseUpgradeRequested()

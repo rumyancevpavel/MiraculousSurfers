@@ -16,13 +16,11 @@ namespace MiraculousSurfers.Gameplay.UI
         public void SetReward(int amount)
         {
             SetText(amount);
-            if (_continueButton != null) _continueButton.gameObject.SetActive(false);
+            _continueButton.gameObject.SetActive(false);
         }
 
         public async UniTask CountToZeroAsync(int from, CancellationToken ct)
         {
-            if (_rewardText == null) return;
-
             if (_countDuration <= 0f)
             {
                 SetText(0);
@@ -43,8 +41,6 @@ namespace MiraculousSurfers.Gameplay.UI
 
         public async UniTask WaitForContinueAsync(CancellationToken ct)
         {
-            if (_continueButton == null) return;
-
             _continueButton.gameObject.SetActive(true);
 
             var tcs = new UniTaskCompletionSource();
@@ -60,9 +56,6 @@ namespace MiraculousSurfers.Gameplay.UI
             }
         }
 
-        private void SetText(int value)
-        {
-            if (_rewardText != null) _rewardText.text = value.ToString();
-        }
+        private void SetText(int value) => _rewardText.text = value.ToString();
     }
 }

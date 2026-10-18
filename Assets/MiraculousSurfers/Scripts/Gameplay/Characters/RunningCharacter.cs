@@ -28,6 +28,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         [SerializeField] private float _maxHeading = 35f;
         [SerializeField] private float _headingReturnRate = 120f;
         [SerializeField] private float _steerFuelCost = 0.5f;
+        [SerializeField] private float _dragSteerScreenFraction = 0.15f;
 
         [Header("Grounding")]
         [SerializeField] private float _gravity = 20f;
@@ -36,16 +37,13 @@ namespace MiraculousSurfers.Gameplay.Characters
         [SerializeField] private float _slowSpeedFactor = 0.5f;
 
         private bool _running;
+        private bool _dragging;
+        private float _dragStartX;
         private float _fuel;
         private float _initialFuel;
         private float _speedMultiplier = 1f;
         private float _steerMultiplier = 1f;
         private float _heading;
-
-        private void Awake()
-        {
-            if (_controller == null) _controller = GetComponent<CharacterController>();
-        }
 
         public override void Launch(LaunchParams launchParams)
         {
@@ -58,7 +56,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             _fuel = _initialFuel;
             _heading = 0f;
 
-            _steerInput?.action.Enable();
+            _steerInput.action.Enable();
             _running = true;
         }
 
@@ -70,9 +68,8 @@ namespace MiraculousSurfers.Gameplay.Characters
             CurrentSpeed = 0f;
             SpeedFraction = 0f;
             _heading = 0f;
-            _steerInput?.action.Disable();
+            _steerInput.action.Disable();
 
-            if (_spawn == null) return;
             _controller.enabled = false;
             transform.SetPositionAndRotation(_spawn.position, _spawn.rotation);
             _controller.enabled = true;
@@ -80,7 +77,7 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         public override void SetChargePull(float distance)
         {
-            if (_spawn == null || _running) return;
+            if (_running) return;
 
             _controller.enabled = false;
             transform.SetPositionAndRotation(_spawn.position - Vector3.forward * Mathf.Max(0f, distance), _spawn.rotation);
@@ -105,7 +102,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             if (obstacle.Effect == ObstacleEffect.Crash)
             {
                 _running = false;
-                _steerInput?.action.Disable();
+                _steerInput.action.Disable();
                 RaiseCrashed();
             }
             else
@@ -115,13 +112,33 @@ namespace MiraculousSurfers.Gameplay.Characters
             }
         }
 
+        private float ReadSteer()
+        {
+            var pointer = Pointer.current;
+            if (pointer != null && pointer.press.isPressed)
+            {
+                var x = pointer.position.ReadValue().x;
+                if (!_dragging)
+                {
+                    _dragging = true;
+                    _dragStartX = x;
+                }
+
+                var range = Screen.width * _dragSteerScreenFraction;
+                return Mathf.Clamp((x - _dragStartX) / range, -1f, 1f);
+            }
+
+            _dragging = false;
+            return Mathf.Clamp(_steerInput.action.ReadValue<Vector2>().x, -1f, 1f);
+        }
+
         private void Update()
         {
             if (!_running) return;
 
-            float steer = _steerInput != null ? Mathf.Clamp(_steerInput.action.ReadValue<Vector2>().x, -1f, 1f) : 0f;
-            float left = _leftBound != null ? _leftBound.position.x : float.NegativeInfinity;
-            float right = _rightBound != null ? _rightBound.position.x : float.PositiveInfinity;
+            float steer = ReadSteer();
+            float left = _leftBound.position.x;
+            float right = _rightBound.position.x;
 
             if (Mathf.Abs(steer) > 0.001f)
                 _heading = Mathf.Clamp(_heading + steer * _steerRate * _steerMultiplier * Time.deltaTime, -_maxHeading, _maxHeading);
@@ -157,7 +174,7 @@ namespace MiraculousSurfers.Gameplay.Characters
                 CurrentSpeed = 0f;
                 SpeedFraction = 0f;
                 _running = false;
-                _steerInput?.action.Disable();
+                _steerInput.action.Disable();
                 RaiseMomentumEnded();
             }
         }

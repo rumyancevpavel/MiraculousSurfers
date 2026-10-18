@@ -22,10 +22,17 @@ namespace MiraculousSurfers.Gameplay.Audio
 
         [SerializeField] private AudioSource _sfxSource;
         [SerializeField] private AudioSource _musicSource;
+        [SerializeField] private AudioSource _countingSource;
+
+        [Header("Theme music ducking")]
+        [SerializeField] private float _musicLowVolume = 0.15f;
+        [SerializeField] private float _musicHighVolume = 0.6f;
+        [SerializeField] private float _musicFadeDuration = 0.6f;
 
         private GameplayEventBus _events;
         private IGameConfigurationSystem _config;
         private readonly List<Action> _unsubscribers = new();
+        private float _musicTargetVolume;
 
         [Inject]
         public void Construct(GameplayEventBus events, IGameConfigurationSystem config)
@@ -36,8 +43,8 @@ namespace MiraculousSurfers.Gameplay.Audio
 
         private void Start()
         {
-            if (_musicSource != null) _musicSource.loop = true;
-            if (_events == null) return;
+            _countingSource.loop = true;
+            StartTheme();
 
             Action<CoinCollected> coinHandler = _ => Play(GameplayEventType.CoinCollected);
             _events.Subscribe(GameplayEventType.CoinCollected, coinHandler);
@@ -51,13 +58,21 @@ namespace MiraculousSurfers.Gameplay.Audio
                 _unsubscribers.Add(() => _events.Unsubscribe(captured, handler));
             }
 
-            Action<GameSignal> startMusic = _ => PlayMusic(GameplayEventType.RunMusicStarted);
-            _events.Subscribe(GameplayEventType.RunMusicStarted, startMusic);
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStarted, startMusic));
+            Action<GameSignal> runStarted = _ => _musicTargetVolume = _musicHighVolume;
+            _events.Subscribe(GameplayEventType.RunMusicStarted, runStarted);
+            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStarted, runStarted));
 
-            Action<GameSignal> stopMusic = _ => StopMusic();
-            _events.Subscribe(GameplayEventType.RunMusicStopped, stopMusic);
-            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStopped, stopMusic));
+            Action<GameSignal> runStopped = _ => _musicTargetVolume = _musicLowVolume;
+            _events.Subscribe(GameplayEventType.RunMusicStopped, runStopped);
+            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.RunMusicStopped, runStopped));
+
+            Action<GameSignal> startCounting = _ => PlayLooping(_countingSource, GameplayEventType.CoinsCountingStarted);
+            _events.Subscribe(GameplayEventType.CoinsCountingStarted, startCounting);
+            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.CoinsCountingStarted, startCounting));
+
+            Action<GameSignal> stopCounting = _ => _countingSource.Stop();
+            _events.Subscribe(GameplayEventType.CoinsCountingStopped, stopCounting);
+            _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.CoinsCountingStopped, stopCounting));
         }
 
         private void OnDestroy()
@@ -66,34 +81,32 @@ namespace MiraculousSurfers.Gameplay.Audio
             _unsubscribers.Clear();
         }
 
-        public void Play(GameplayEventType eventType)
+        private void Update()
         {
-            if (_sfxSource == null || _config == null) return;
-
-            var clips = _config.AudioClips(eventType);
-            if (clips == null || clips.Length == 0) return;
-
-            var clip = clips.Length == 1 ? clips[0] : clips[UnityEngine.Random.Range(0, clips.Length)];
-            if (clip != null) _sfxSource.PlayOneShot(clip);
+            var maxDelta = Time.unscaledDeltaTime / _musicFadeDuration;
+            _musicSource.volume = Mathf.MoveTowards(_musicSource.volume, _musicTargetVolume, maxDelta);
         }
 
-        private void PlayMusic(GameplayEventType eventType)
+        private void StartTheme()
         {
-            if (_musicSource == null || _config == null) return;
-
-            var clips = _config.AudioClips(eventType);
-            if (clips == null || clips.Length == 0) return;
-
-            var clip = clips.Length == 1 ? clips[0] : clips[UnityEngine.Random.Range(0, clips.Length)];
-            if (clip == null) return;
-
-            _musicSource.clip = clip;
+            _musicTargetVolume = _musicLowVolume;
+            _musicSource.clip = _config.AudioClips(GameplayEventType.RunMusicStarted)[0];
+            _musicSource.loop = true;
+            _musicSource.volume = _musicLowVolume;
             _musicSource.Play();
         }
 
-        private void StopMusic()
+        public void Play(GameplayEventType eventType)
         {
-            if (_musicSource != null) _musicSource.Stop();
+            var clips = _config.AudioClips(eventType);
+            _sfxSource.PlayOneShot(clips.Length == 1 ? clips[0] : clips[UnityEngine.Random.Range(0, clips.Length)]);
+        }
+
+        private void PlayLooping(AudioSource source, GameplayEventType eventType)
+        {
+            var clips = _config.AudioClips(eventType);
+            source.clip = clips.Length == 1 ? clips[0] : clips[UnityEngine.Random.Range(0, clips.Length)];
+            source.Play();
         }
     }
 }
