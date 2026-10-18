@@ -24,18 +24,21 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
             builder.RegisterComponentInHierarchy<RunningScreenWalletView>();
             builder.RegisterComponentInHierarchy<NewRecordWalletView>();
             builder.RegisterComponentInHierarchy<TryEndedWalletView>();
+            
             builder.Register<IDataSaveSystem<PlayerUpgradesData>, PlayerUpgradesSaveSystem>(Lifetime.Singleton);
-            builder.RegisterInstance(_gameConfiguration);
-            builder.Register<IGameConfigurationSystem, LocalGameConfigurationSystem>(Lifetime.Singleton);
+            builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);
             builder.Register<IDataSaveSystem<PlayerWalletData>, PlayerWalletSaveSystem>(Lifetime.Singleton);
-            builder.RegisterEntryPoint<WalletService>(Lifetime.Singleton);
+            
+            
+            builder.Register<IGameConfigurationSystem, LocalGameConfigurationSystem>(Lifetime.Singleton);
+            builder.RegisterInstance(_gameConfiguration);
+            builder.RegisterEntryPoint<WalletService>();
             builder.Register<GameplayEventBus>(Lifetime.Singleton);
-            builder.RegisterEntryPoint<UpgradeService>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<UpgradeService>();
             builder.RegisterComponentInHierarchy<AudioManager>().As<IAudioManager>();
             builder.RegisterComponentInHierarchy<AnimationEventsHandler>();
             builder.RegisterComponentInHierarchy<UpgradeMenuView>();
             builder.RegisterComponentInHierarchy<GameplayStateMachine>();
-            builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<ScoreManager>().As<IScoreManager>();
         }
     }

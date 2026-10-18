@@ -47,7 +47,9 @@ namespace MiraculousSurfers.Gameplay.Audio
             StartTheme();
 
             Action<CoinCollected> coinHandler = _ => Play(GameplayEventType.CoinCollected);
+            
             _events.Subscribe(GameplayEventType.CoinCollected, coinHandler);
+            
             _unsubscribers.Add(() => _events.Unsubscribe(GameplayEventType.CoinCollected, coinHandler));
 
             foreach (var eventType in SignalEvents)
