@@ -13,7 +13,7 @@ namespace MiraculousSurfers.Gameplay.UI
         [SerializeField] private float _maxDrag = 300f;
         [SerializeField] private float _deadZone = 20f;
         [SerializeField] private float _maxCharge = 100f;
-        [SerializeField] private AnimationCurve _chargeResponse = new(new Keyframe(0f, 0f, 0f, 2f), new Keyframe(1f, 1f, 0f, 0f));
+        [SerializeField] private AnimationCurve _chargeResponse;
 
         public float MaxCharge => _maxCharge;
 

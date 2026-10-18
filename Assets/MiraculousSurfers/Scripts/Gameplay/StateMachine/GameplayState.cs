@@ -1,28 +1,26 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Configuration;
+using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Events;
+using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
-using VContainer;
 
 namespace MiraculousSurfers.Gameplay.StateMachine
 {
     public abstract class GameplayState : MonoBehaviour
     {
         protected GameplayStateMachine Machine { get; private set; }
-        protected IUpgradeService Upgrades { get; private set; }
-        protected GameplayEventBus Events { get; private set; }
+        protected IUpgradeService Upgrades => Machine != null ? Machine.Upgrades : null;
+        protected GameplayEventBus Events => Machine != null ? Machine.Events : null;
+        protected IScoreManager ScoreManager => Machine != null ? Machine.ScoreManager : null;
+        protected IWalletService Wallet => Machine != null ? Machine.Wallet : null;
+        protected IGameConfigurationSystem Config => Machine != null ? Machine.Config : null;
         protected Character Character => Machine != null ? Machine.Character : null;
         protected Animator CharacterAnimator => Machine != null ? Machine.CharacterAnimator : null;
         protected abstract GameplayStateType StateType { get; }
-
-        [Inject]
-        public void InjectDependencies(IUpgradeService upgrades, GameplayEventBus events)
-        {
-            Upgrades = upgrades;
-            Events = events;
-        }
 
         public void Bind(GameplayStateMachine machine) => Machine = machine;
 

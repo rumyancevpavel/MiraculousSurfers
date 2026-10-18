@@ -140,6 +140,8 @@ MonoBehaviour:
   _leftBound: {fileID: 0}
   _rightBound: {fileID: 0}
   _steerInput: {fileID: -1246895598473198080, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _pointerPositionInput: {fileID: -5818382144876698730, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _pointerPressInput: {fileID: -2556180840254452209, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   _fuelPerPower: 0.2
   _fuelToSpeed: 2
   _drainCurve:

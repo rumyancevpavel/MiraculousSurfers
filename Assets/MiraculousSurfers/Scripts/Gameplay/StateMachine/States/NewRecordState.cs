@@ -1,13 +1,9 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using MiraculousSurfers.Configuration;
-using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Events;
-using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
-using VContainer;
 
 namespace MiraculousSurfers.Gameplay.StateMachine.States
 {
@@ -25,25 +21,13 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private static readonly int EnterStateTrigger = Animator.StringToHash("NewRecordState");
 
-        private IScoreManager _scoreManager;
-        private IWalletService _wallet;
-        private IGameConfigurationSystem _config;
-
         protected override GameplayStateType StateType => GameplayStateType.NewRecord;
-
-        [Inject]
-        public void InjectNewRecord(IScoreManager scoreManager, IWalletService wallet, IGameConfigurationSystem config)
-        {
-            _scoreManager = scoreManager;
-            _wallet = wallet;
-            _config = config;
-        }
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
             CharacterAnimator.SetTrigger(EnterStateTrigger);
 
-            var reward = _config.RecordReward(_scoreManager.Best);
+            var reward = Config.RecordReward(ScoreManager.Best);
             _rewardsWidget.SetReward(reward);
 
             await _screenView.ShowAsync(ct);
@@ -53,7 +37,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             if (ct.IsCancellationRequested) return;
 
             Events.Publish(GameplayEventType.CoinsCountingStarted, new GameSignal());
-            _wallet.AddCoins(reward).Forget();
+            Wallet.AddCoins(reward).Forget();
             await _rewardsWidget.CountToZeroAsync(reward, ct);
             Events.Publish(GameplayEventType.CoinsCountingStopped, new GameSignal());
             if (ct.IsCancellationRequested) return;

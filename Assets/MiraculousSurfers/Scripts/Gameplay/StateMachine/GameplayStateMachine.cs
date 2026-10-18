@@ -1,6 +1,11 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Configuration;
+using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Characters;
+using MiraculousSurfers.Gameplay.Events;
+using MiraculousSurfers.Gameplay.Score;
+using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
 using VContainer;
 
@@ -14,18 +19,29 @@ namespace MiraculousSurfers.Gameplay.StateMachine
 
         public Character Character => _character;
         public Animator CharacterAnimator => _characterAnimator;
+        public IUpgradeService Upgrades { get; private set; }
+        public GameplayEventBus Events { get; private set; }
+        public IScoreManager ScoreManager { get; private set; }
+        public IWalletService Wallet { get; private set; }
+        public IGameConfigurationSystem Config { get; private set; }
 
         private GameplayState Current { get; set; }
 
         private CancellationTokenSource _transitionCts;
 
         [Inject]
-        public void InjectStates(IObjectResolver resolver)
+        public void InjectDependencies(
+            IUpgradeService upgrades,
+            GameplayEventBus events,
+            IScoreManager scoreManager,
+            IWalletService wallet,
+            IGameConfigurationSystem config)
         {
-            foreach (var state in GetComponentsInChildren<GameplayState>(true))
-            {
-                resolver.Inject(state);
-            }
+            Upgrades = upgrades;
+            Events = events;
+            ScoreManager = scoreManager;
+            Wallet = wallet;
+            Config = config;
         }
 
         private void Start() => GoTo(_initialState).Forget();

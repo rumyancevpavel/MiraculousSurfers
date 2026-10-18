@@ -1,12 +1,9 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using MiraculousSurfers.Configuration;
-using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Events;
 using MiraculousSurfers.Gameplay.UI;
 using UnityEngine;
-using VContainer;
 
 namespace MiraculousSurfers.Gameplay.StateMachine.States
 {
@@ -25,17 +22,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         private static readonly int EnterStateTrigger = Animator.StringToHash("TryEndedState");
         private static readonly int CelebrationType = Animator.StringToHash("TryEndedState_CelebrationType");
 
-        private IWalletService _wallet;
-        private IGameConfigurationSystem _config;
-
         protected override GameplayStateType StateType => GameplayStateType.TryEnded;
-
-        [Inject]
-        public void InjectTryEnded(IWalletService wallet, IGameConfigurationSystem config)
-        {
-            _wallet = wallet;
-            _config = config;
-        }
 
         protected override async UniTask OnEnterAsync(CancellationToken ct)
         {
@@ -43,7 +30,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             CharacterAnimator.SetTrigger(EnterStateTrigger);
             CharacterAnimator.SetInteger(CelebrationType, celebrationType);
 
-            var reward = _config.TryEndedReward(Character.TraveledDistance);
+            var reward = Config.TryEndedReward(Character.TraveledDistance);
             _rewardsWidget.SetReward(reward);
 
             await _screenView.ShowAsync(ct);
@@ -53,7 +40,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             if (ct.IsCancellationRequested) return;
 
             Events.Publish(GameplayEventType.CoinsCountingStarted, new GameSignal());
-            _wallet.AddCoins(reward).Forget();
+            Wallet.AddCoins(reward).Forget();
             await _rewardsWidget.CountToZeroAsync(reward, ct);
             Events.Publish(GameplayEventType.CoinsCountingStopped, new GameSignal());
             if (ct.IsCancellationRequested) return;

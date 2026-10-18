@@ -16,6 +16,8 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         [Header("Input")]
         [SerializeField] private InputActionReference _steerInput;
+        [SerializeField] private InputActionReference _pointerPositionInput;
+        [SerializeField] private InputActionReference _pointerPressInput;
 
         [Header("Momentum")]
         [SerializeField] private float _fuelPerPower = 1f;
@@ -39,7 +41,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         private bool _running;
         private bool _dragging;
         private float _dragStartX;
-        private float _fuel;
+        private float _momentumFuel;
         private float _initialFuel;
         private float _speedMultiplier = 1f;
         private float _steerMultiplier = 1f;
@@ -53,22 +55,36 @@ namespace MiraculousSurfers.Gameplay.Characters
             _steerMultiplier = launchParams.SteerMultiplier;
 
             _initialFuel = Mathf.Max(0.0001f, launchParams.Power * _fuelPerPower);
-            _fuel = _initialFuel;
+            _momentumFuel = _initialFuel;
             _heading = 0f;
 
-            _steerInput.action.Enable();
+            EnableInput();
             _running = true;
+        }
+
+        private void EnableInput()
+        {
+            _steerInput.action.Enable();
+            _pointerPositionInput.action.Enable();
+            _pointerPressInput.action.Enable();
+        }
+
+        private void DisableInput()
+        {
+            _steerInput.action.Disable();
+            _pointerPositionInput.action.Disable();
+            _pointerPressInput.action.Disable();
         }
 
         public override void ResetToSpawn()
         {
             _running = false;
-            _fuel = 0f;
+            _momentumFuel = 0f;
             TraveledDistance = 0f;
             CurrentSpeed = 0f;
             SpeedFraction = 0f;
             _heading = 0f;
-            _steerInput.action.Disable();
+            DisableInput();
 
             _controller.enabled = false;
             transform.SetPositionAndRotation(_spawn.position, _spawn.rotation);
@@ -102,7 +118,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             if (obstacle.Effect == ObstacleEffect.Crash)
             {
                 _running = false;
-                _steerInput.action.Disable();
+                DisableInput();
                 RaiseCrashed();
             }
             else
@@ -114,10 +130,9 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         private float ReadSteer()
         {
-            var pointer = Pointer.current;
-            if (pointer != null && pointer.press.isPressed)
+            if (_pointerPressInput.action.IsPressed())
             {
-                var x = pointer.position.ReadValue().x;
+                var x = _pointerPositionInput.action.ReadValue<Vector2>().x;
                 if (!_dragging)
                 {
                     _dragging = true;
@@ -136,47 +151,64 @@ namespace MiraculousSurfers.Gameplay.Characters
         {
             if (!_running) return;
 
-            float steer = ReadSteer();
-            float left = _leftBound.position.x;
-            float right = _rightBound.position.x;
+            var steer = ReadSteer();
+            UpdateHeading(steer);
+            var speed = UpdateSpeedState();
+            ApplyMovement(speed);
+            ConsumeMomentumFuel(steer);
+        }
 
+        private void UpdateHeading(float steer)
+        {
             if (Mathf.Abs(steer) > 0.001f)
                 _heading = Mathf.Clamp(_heading + steer * _steerRate * _steerMultiplier * Time.deltaTime, -_maxHeading, _maxHeading);
             else
                 _heading = Mathf.MoveTowards(_heading, 0f, _headingReturnRate * Time.deltaTime);
+        }
 
-            float speed = _fuel * _fuelToSpeed * _speedMultiplier;
+        private float UpdateSpeedState()
+        {
+            var speed = _momentumFuel * _fuelToSpeed * _speedMultiplier;
             CurrentSpeed = speed;
-            SpeedFraction = Mathf.Clamp01(_fuel / _initialFuel);
+            SpeedFraction = Mathf.Clamp01(_momentumFuel / _initialFuel);
+            return speed;
+        }
 
+        private void ApplyMovement(float speed)
+        {
             var headingRotation = Quaternion.Euler(0f, _heading, 0f);
             transform.rotation = headingRotation;
 
-            float currentX = transform.position.x;
-            Vector3 delta = headingRotation * Vector3.forward * (speed * Time.deltaTime);
-            float newX = Mathf.Clamp(currentX + delta.x, left, right);
+            var left = _leftBound.position.x;
+            var right = _rightBound.position.x;
+            var currentX = transform.position.x;
+
+            var delta = headingRotation * Vector3.forward * (speed * Time.deltaTime);
+            var newX = Mathf.Clamp(currentX + delta.x, left, right);
             delta.x = newX - currentX;
             delta.y = -_gravity * Time.deltaTime;
 
-            Vector3 before = transform.position;
+            var before = transform.position;
             _controller.Move(delta);
-            Vector3 travelled = transform.position - before;
+            var travelled = transform.position - before;
             travelled.y = 0f;
             TraveledDistance += travelled.magnitude;
+        }
 
-            float frac = Mathf.Clamp01(_fuel / _initialFuel);
-            float drain = Mathf.Max(_drainCurve.Evaluate(frac), _minDrain) + Mathf.Abs(steer) * _steerFuelCost;
-            _fuel -= drain * Time.deltaTime;
+        private void ConsumeMomentumFuel(float steer)
+        {
+            var frac = Mathf.Clamp01(_momentumFuel / _initialFuel);
+            var drain = Mathf.Max(_drainCurve.Evaluate(frac), _minDrain) + Mathf.Abs(steer) * _steerFuelCost;
+            _momentumFuel -= drain * Time.deltaTime;
 
-            if (_fuel <= 0f)
-            {
-                _fuel = 0f;
-                CurrentSpeed = 0f;
-                SpeedFraction = 0f;
-                _running = false;
-                _steerInput.action.Disable();
-                RaiseMomentumEnded();
-            }
+            if (_momentumFuel > 0f) return;
+
+            _momentumFuel = 0f;
+            CurrentSpeed = 0f;
+            SpeedFraction = 0f;
+            _running = false;
+            DisableInput();
+            RaiseMomentumEnded();
         }
     }
 }

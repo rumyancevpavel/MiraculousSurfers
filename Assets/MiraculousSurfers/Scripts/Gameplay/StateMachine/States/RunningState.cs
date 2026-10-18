@@ -1,15 +1,11 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using MiraculousSurfers.Configuration;
-using MiraculousSurfers.Economy;
 using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Collectibles;
 using MiraculousSurfers.Gameplay.Events;
-using MiraculousSurfers.Gameplay.Score;
 using MiraculousSurfers.Gameplay.UI;
 using MiraculousSurfers.Gameplay.Upgrades;
 using UnityEngine;
-using VContainer;
 
 namespace MiraculousSurfers.Gameplay.StateMachine.States
 {
@@ -29,21 +25,10 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         private static readonly int EnterStateTrigger = Animator.StringToHash("RunningState");
         private static readonly int RunningSpeed = Animator.StringToHash("RunningState_RunningSpeed");
 
-        private IScoreManager _scoreManager;
-        private IWalletService _wallet;
-        private IGameConfigurationSystem _config;
         private LaunchParams _launchParams;
         private bool _running;
 
         protected override GameplayStateType StateType => GameplayStateType.Running;
-
-        [Inject]
-        public void InjectRunning(IScoreManager scoreManager, IWalletService wallet, IGameConfigurationSystem config)
-        {
-            _scoreManager = scoreManager;
-            _wallet = wallet;
-            _config = config;
-        }
 
         public void Configure(LaunchParams launchParams)
         {
@@ -88,14 +73,14 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         {
             Events.Publish(GameplayEventType.RunEnded, new RunEnded(Character.TraveledDistance, Character.transform.position, RunEndReason.Crashed));
             Events.Publish(GameplayEventType.Crashed, new GameSignal());
-            _scoreManager.ReportDistance(Character.TraveledDistance, Character.transform.position);
+            ScoreManager.ReportDistance(Character.TraveledDistance, Character.transform.position);
             Machine.GoTo(_crashState).Forget();
         }
 
         private void OnMomentumEnded(float distance)
         {
             Events.Publish(GameplayEventType.RunEnded, new RunEnded(distance, Character.transform.position, RunEndReason.MomentumDepleted));
-            var isNewHighScore = _scoreManager.ReportDistance(distance, Character.transform.position);
+            var isNewHighScore = ScoreManager.ReportDistance(distance, Character.transform.position);
             Machine.GoTo(isNewHighScore ? _newRecordState : _tryEndedState).Forget();
         }
 
@@ -103,10 +88,10 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnCollectiblePickedUp(CollectibleKind kind)
         {
-            var baseCoins = _config.CollectibleCoins(kind);
+            var baseCoins = Config.CollectibleCoins(kind);
             var amount = Mathf.Max(0, Mathf.RoundToInt(baseCoins * Upgrades.GetValue(UpgradeParam.CollectibleValue)));
             if (amount <= 0) return;
-            _wallet.AddCoins(amount).Forget();
+            Wallet.AddCoins(amount).Forget();
 
             if (kind == CollectibleKind.GiftBox)
                 Events.Publish(GameplayEventType.GiftBoxCollected, new GameSignal());

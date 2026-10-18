@@ -22,17 +22,13 @@ namespace MiraculousSurfers.Gameplay.LifetimeScopes
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<TargetFrameRateInitializer>();
-
             builder.RegisterComponentInHierarchy<HomeScreenWalletView>();
             builder.RegisterComponentInHierarchy<RunningScreenWalletView>();
             builder.RegisterComponentInHierarchy<NewRecordWalletView>();
             builder.RegisterComponentInHierarchy<TryEndedWalletView>();
-            
             builder.Register<IDataSaveSystem<PlayerUpgradesData>, PlayerUpgradesSaveSystem>(Lifetime.Singleton);
             builder.Register<IDataSaveSystem<PlayerHighScoreData>, PlayerHighScoreSaveSystem>(Lifetime.Singleton);
             builder.Register<IDataSaveSystem<PlayerWalletData>, PlayerWalletSaveSystem>(Lifetime.Singleton);
-            
-            
             builder.Register<IGameConfigurationSystem, LocalGameConfigurationSystem>(Lifetime.Singleton);
             builder.RegisterInstance(_gameConfiguration);
             builder.RegisterEntryPoint<WalletService>();
