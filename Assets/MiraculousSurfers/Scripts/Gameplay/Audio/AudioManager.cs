@@ -14,7 +14,6 @@ namespace MiraculousSurfers.Gameplay.Audio
         {
             GameplayEventType.UpgradeRequested,
             GameplayEventType.Crashed,
-            GameplayEventType.GiftBoxCollected,
             GameplayEventType.CharacterBeginsRunning,
             GameplayEventType.SingleStep,
             GameplayEventType.Upgrade,
@@ -49,6 +48,9 @@ namespace MiraculousSurfers.Gameplay.Audio
             _events.Subscribe<CoinCollected>(GameplayEventType.CoinCollected, OnCoinCollected);
             _unsubscribers.Add(() => _events.Unsubscribe<CoinCollected>(GameplayEventType.CoinCollected, OnCoinCollected));
 
+            _events.Subscribe<GiftBoxCollected>(GameplayEventType.GiftBoxCollected, OnGiftBoxCollected);
+            _unsubscribers.Add(() => _events.Unsubscribe<GiftBoxCollected>(GameplayEventType.GiftBoxCollected, OnGiftBoxCollected));
+
             foreach (var eventType in SignalEvents)
             {
                 var captured = eventType;
@@ -73,6 +75,11 @@ namespace MiraculousSurfers.Gameplay.Audio
         private void OnCoinCollected(CoinCollected coinCollected)
         {
             Play(GameplayEventType.CoinCollected);
+        }
+
+        private void OnGiftBoxCollected(GiftBoxCollected giftBoxCollected)
+        {
+            Play(GameplayEventType.GiftBoxCollected);
         }
 
         private void OnRunStarted(GameSignal signal)

@@ -14,6 +14,15 @@ namespace MiraculousSurfers.Gameplay
         [SerializeField] private float _defaultDuration = 0.6f;
         [SerializeField] private AnimationCurve _defaultEase;
 
+        [Header("Speed FOV")]
+        [SerializeField] private float _maxFovBoost = 16f;
+        [SerializeField] private float _fovSmoothTime = 0.4f;
+
+        private float _baseFov;
+        private float _targetFovFactor;
+        private float _currentFovFactor;
+        private float _fovVelocity;
+
         private void Reset()
         {
             _cam = GetComponent<CinemachineCamera>();
@@ -24,9 +33,22 @@ namespace MiraculousSurfers.Gameplay
         {
             if (_cam == null) _cam = GetComponent<CinemachineCamera>();
             if (_orbital == null) _orbital = GetComponent<CinemachineOrbitalFollow>();
+            _baseFov = _cam.Lens.FieldOfView;
+        }
+
+        private void Update()
+        {
+            _currentFovFactor = Mathf.SmoothDamp(_currentFovFactor, _targetFovFactor, ref _fovVelocity, _fovSmoothTime);
+            var lens = _cam.Lens;
+            lens.FieldOfView = _baseFov + _currentFovFactor * _maxFovBoost;
+            _cam.Lens = lens;
         }
 
         public void Activate() => _cam.Prioritize();
+
+        public void SetSpeedFactor(float factor) => _targetFovFactor = Mathf.Clamp01(factor);
+
+        public void ResetFov() => _targetFovFactor = 0f;
 
         private void SetImmediate(OrbitPreset p)
         {

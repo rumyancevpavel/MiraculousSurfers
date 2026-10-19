@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MiraculousSurfers.Gameplay.Camera;
 using MiraculousSurfers.Gameplay.Characters;
 using MiraculousSurfers.Gameplay.Collectibles;
 using MiraculousSurfers.Gameplay.Events;
@@ -21,6 +22,11 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         [Header("Animation")]
         [SerializeField] private AnimationCurve _speedToBlend = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+
+        [Header("Speed Feel")]
+        [SerializeField] private OrbitalCameraRig _cameraRig;
+        [SerializeField] private float _fovSpeedMin = 14f;
+        [SerializeField] private float _fovSpeedMax = 26f;
 
         private static readonly int EnterStateTrigger = Animator.StringToHash("RunningState");
         private static readonly int RunningSpeed = Animator.StringToHash("RunningState_RunningSpeed");
@@ -58,6 +64,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
         protected override UniTask OnExitAsync(CancellationToken ct)
         {
             Events.Publish(GameplayEventType.RunMusicStopped, new GameSignal());
+            _cameraRig.ResetFov();
             if (_runningScreenView != null) _runningScreenView.HideAsync(ct).Forget();
             return UniTask.CompletedTask;
         }
@@ -67,6 +74,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             if (!_running || Character == null) return;
             if (_runningScreenView != null) _runningScreenView.SetDistance(Character.TraveledDistance);
             CharacterAnimator.SetFloat(RunningSpeed, _speedToBlend.Evaluate(Character.SpeedFraction));
+            _cameraRig.SetSpeedFactor(Mathf.InverseLerp(_fovSpeedMin, _fovSpeedMax, Character.CurrentSpeed));
         }
 
         private void OnCrashed()
@@ -86,7 +94,7 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
 
         private void OnSlowedDown() { }
 
-        private void OnCollectiblePickedUp(CollectibleKind kind)
+        private void OnCollectiblePickedUp(CollectibleKind kind, Vector3 position)
         {
             var baseCoins = Config.CollectibleCoins(kind);
             var amount = Mathf.Max(0, Mathf.RoundToInt(baseCoins * Upgrades.GetValue(UpgradeParam.CollectibleValue)));
@@ -94,9 +102,9 @@ namespace MiraculousSurfers.Gameplay.StateMachine.States
             Wallet.AddCoins(amount).Forget();
 
             if (kind == CollectibleKind.GiftBox)
-                Events.Publish(GameplayEventType.GiftBoxCollected, new GameSignal());
+                Events.Publish(GameplayEventType.GiftBoxCollected, new GiftBoxCollected(position));
             else
-                Events.Publish(GameplayEventType.CoinCollected, new CoinCollected(amount));
+                Events.Publish(GameplayEventType.CoinCollected, new CoinCollected(amount, position));
         }
 
         protected override void Subscribe()

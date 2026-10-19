@@ -107,7 +107,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             var collectible = other.GetComponentInParent<Collectible>();
             if (collectible != null)
             {
-                RaiseCollectiblePickedUp(collectible.Kind);
+                RaiseCollectiblePickedUp(collectible.Kind, collectible.transform.position);
                 collectible.Collect();
                 return;
             }

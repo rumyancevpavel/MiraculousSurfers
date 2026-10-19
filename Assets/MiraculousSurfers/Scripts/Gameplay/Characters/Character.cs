@@ -9,7 +9,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         public event Action SlowedDown;
         public event Action Crashed;
         public event Action<float> MomentumEnded;
-        public event Action<CollectibleKind> CollectiblePickedUp;
+        public event Action<CollectibleKind, Vector3> CollectiblePickedUp;
 
         public float TraveledDistance { get; protected set; }
         public float CurrentSpeed { get; protected set; }
@@ -29,6 +29,6 @@ namespace MiraculousSurfers.Gameplay.Characters
         protected void RaiseSlowedDown() => SlowedDown?.Invoke();
         protected void RaiseCrashed() => Crashed?.Invoke();
         protected void RaiseMomentumEnded() => MomentumEnded?.Invoke(TraveledDistance);
-        protected void RaiseCollectiblePickedUp(CollectibleKind kind) => CollectiblePickedUp?.Invoke(kind);
+        protected void RaiseCollectiblePickedUp(CollectibleKind kind, Vector3 position) => CollectiblePickedUp?.Invoke(kind, position);
     }
 }
