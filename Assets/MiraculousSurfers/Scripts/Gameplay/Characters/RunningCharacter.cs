@@ -26,9 +26,8 @@ namespace MiraculousSurfers.Gameplay.Characters
         [SerializeField] private float _minDrain = 0.05f;
 
         [Header("Steering")]
-        [SerializeField] private float _steerRate = 90f;
         [SerializeField] private float _maxHeading = 35f;
-        [SerializeField] private float _headingReturnRate = 120f;
+        [SerializeField] private float _steerSmoothTime = 0.08f;
         [SerializeField] private float _steerFuelCost = 0.5f;
         [SerializeField] private float _dragSteerScreenFraction = 0.15f;
 
@@ -46,6 +45,7 @@ namespace MiraculousSurfers.Gameplay.Characters
         private float _speedMultiplier = 1f;
         private float _steerMultiplier = 1f;
         private float _heading;
+        private float _headingVelocity;
 
         public override void Launch(LaunchParams launchParams)
         {
@@ -57,6 +57,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             _initialFuel = Mathf.Max(0.0001f, launchParams.Power * _fuelPerPower);
             _momentumFuel = _initialFuel;
             _heading = 0f;
+            _headingVelocity = 0f;
 
             EnableInput();
             _running = true;
@@ -84,6 +85,7 @@ namespace MiraculousSurfers.Gameplay.Characters
             CurrentSpeed = 0f;
             SpeedFraction = 0f;
             _heading = 0f;
+            _headingVelocity = 0f;
             DisableInput();
 
             _controller.enabled = false;
@@ -160,10 +162,9 @@ namespace MiraculousSurfers.Gameplay.Characters
 
         private void UpdateHeading(float steer)
         {
-            if (Mathf.Abs(steer) > 0.001f)
-                _heading = Mathf.Clamp(_heading + steer * _steerRate * _steerMultiplier * Time.deltaTime, -_maxHeading, _maxHeading);
-            else
-                _heading = Mathf.MoveTowards(_heading, 0f, _headingReturnRate * Time.deltaTime);
+            var targetHeading = Mathf.Clamp(steer, -1f, 1f) * _maxHeading;
+            var smoothTime = _steerSmoothTime / Mathf.Max(0.0001f, _steerMultiplier);
+            _heading = Mathf.SmoothDamp(_heading, targetHeading, ref _headingVelocity, smoothTime);
         }
 
         private float UpdateSpeedState()
